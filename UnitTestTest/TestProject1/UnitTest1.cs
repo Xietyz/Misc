@@ -1,31 +1,54 @@
 using ConsoleApp2;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace TestProject1
 {
     public class Tests
     {
-        [SetUp]
-        public void Setup()
+        [Test]
+        public void AnaEventsClassTest()
         {
+            var testEvent = new AnalyticEvents(0, "start");
+            var data = new List<AnalyticEvents>();
+            data.Add(new AnalyticEvents(0, "start"));
+
+            Assert.AreEqual(data[0].Event, "start");
+            Assert.AreEqual(data[0].Id, testEvent.Id);
         }
 
         [Test]
-        public void Test1()
+        public void TestDataHasMoreThan3Events()
         {
-            //Arrange 
-            var testdata = new string[] { "blueberry", "apple", "zuchini", "cherry", "tamarind"};
+            Assert.IsTrue(TestData.Basic.Count() > 3);
+        }
 
-            // Act 
-            var result = new OrderFunction().OrderByAssumingSpecial(testdata);
+        [Test]
+        public void Three0Events()
+        {
+            Assert.AreEqual(TestData.Basic.Count(x => x.Id == 0), 3);
+        }
 
-            // Assert
-            Assert.That(result[0], Has.Length.EqualTo(2)) ;
-            Assert.That(result[1], Is.EqualTo("zuchini" )) ;
-            Assert.That(result[2], Is.EqualTo("blueberry" )) ;
-            Assert.That(result[3], Is.EqualTo("cherry" )) ;
-            Assert.That(result[4], Is.EqualTo("tamarind" )) ;
-            //Assert.IsTrue(result.SequenceEqual(new string[] { "apple", "zuchini", "blueberry", "cherry", "tamarind" }));
+        [Test]
+        public void GettingLastEventOfOneID()
+        {
+            Assert.AreEqual(TestData.Basic.Last(x => x.Id == 0).Event, "action");
+        }
+        [Test]
+        public void GettingLastEventOfAllIDsInSequence()
+        {
+            var data = Analytics.CalculateProgress(TestData.Basic);
+
+            Assert.IsTrue(data.Select(x => x.Event)
+                .SequenceEqual(new string[] { "action", "end", "end", "error" }));
+        }
+
+        [Test]
+        public void ArrayToArrayTest()
+        {
+            IEnumerable<AnalyticEvents> test = Analytics.CalculateProgress(TestData.Basic);
+            Assert.IsTrue(test.First(x => x.Id == 0).Id == (new AnalyticEvents[] { TestData.Basic[4] }).First(x => x.Id == 0).Id);
         }
     }
 }
