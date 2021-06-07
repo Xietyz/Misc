@@ -10,11 +10,11 @@ namespace TestProject1
         [Test]
         public void AnalyticsEventsClassTest()
         {
-            var testEvent = new AnalyticEvents(0, "start");
+            var testEvent = new AnalyticEvents(0, IDEvent.Create);
             var data = new List<AnalyticEvents>();
-            data.Add(new AnalyticEvents(0, "start"));
+            data.Add(new AnalyticEvents(0, IDEvent.Create));
 
-            Assert.AreEqual(data[0].Event, "start");
+            Assert.AreEqual(data[0].Event.ToString(), "Create");
             Assert.AreEqual(data[0].Id, testEvent.Id);
         }
 
@@ -25,7 +25,7 @@ namespace TestProject1
         }
 
         [Test]
-        public void Three0Events()
+        public void ThreeID0Events()
         {
             Assert.AreEqual(TestData.Basic.Count(x => x.Id == 0), 3);
         }
@@ -33,22 +33,29 @@ namespace TestProject1
         [Test]
         public void GettingLastEventOfOneID()
         {
-            Assert.AreEqual(TestData.Basic.Last(x => x.Id == 0).Event, "action");
+            Assert.AreEqual(TestData.Basic.Last(x => x.Id == 0).Event.ToString(), "Action");
         }
         [Test]
         public void GettingLastEventOfAllIDsInSequence()
         {
-            var data = Analytics.CalculateProgress(TestData.Basic);
+            var data = new Analytics().CalculateProgress(TestData.Basic);
 
-            Assert.IsTrue(data.Select(x => x.Event)
-                .SequenceEqual(new string[] { "action", "end", "end", "error" }));
+            Assert.IsTrue(data.Select(x => x.Event.ToString())
+                .SequenceEqual(new string[] { "Action", "End", "End", "Error" }));
         }
 
         [Test]
         public void ArrayToArrayTest()
         {
-            IEnumerable<AnalyticEvents> test = Analytics.CalculateProgress(TestData.Basic);
+            IEnumerable<AnalyticEvents> test = new Analytics().CalculateProgress(TestData.Basic);
             Assert.IsTrue(test.First(x => x.Id == 0).Id == (new AnalyticEvents[] { TestData.Basic[4] }).First(x => x.Id == 0).Id);
+        }
+
+        [Test]
+        public void GetLastOfOneIDProper()
+        {
+            var testData = new Analytics().GetLatestEvents(TestData.Basic);
+            Assert.AreEqual(testData[0].Event, IDEvent.Action);
         }
     }
 }

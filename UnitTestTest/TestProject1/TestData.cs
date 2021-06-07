@@ -12,16 +12,16 @@ namespace TestProject1
             get
             {
                 return new[] {
-                new AnalyticEvents(0, "start"),
-                new AnalyticEvents(0, "action"),
-                new AnalyticEvents(1, "start"),
-                new AnalyticEvents(2, "start"),
-                new AnalyticEvents(0, "action"),
-                new AnalyticEvents(1, "action"),
-                new AnalyticEvents(3, "start"),
-                new AnalyticEvents(3, "error"),
-                new AnalyticEvents(1, "end"),
-                new AnalyticEvents(2, "end")
+                new AnalyticEvents(0, IDEvent.Create),
+                new AnalyticEvents(0, IDEvent.Action),
+                new AnalyticEvents(1, IDEvent.Create),
+                new AnalyticEvents(2, IDEvent.Create),
+                new AnalyticEvents(0, IDEvent.Action),
+                new AnalyticEvents(1, IDEvent.Action),
+                new AnalyticEvents(3, IDEvent.Create),
+                new AnalyticEvents(3, IDEvent.Error),
+                new AnalyticEvents(1, IDEvent.End),
+                new AnalyticEvents(2, IDEvent.End)
                 };
             }
         }
