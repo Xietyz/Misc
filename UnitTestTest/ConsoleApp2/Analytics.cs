@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace ConsoleApp2
 {
-    static public class Analytics
+    public class Analytics
     {
         //task method
         //List<int> ids, 
-        static public AnalyticEvents[] CalculateProgress(AnalyticEvents[] events)
+        public AnalyticEvents[] CalculateProgress(AnalyticEvents[] events)
         {
             //get latest state of id probs a better way
             var test = new AnalyticEvents[] {
@@ -24,14 +24,13 @@ namespace ConsoleApp2
 
     public class AnalyticEvents
     {
-        public int Id { get; set; }
-        public string Event { get; set; }
+        public int Id { get; }
+        public string Event { get;}
         
         public AnalyticEvents(int id, string ev)
         {
             Id = id;
             Event = ev;
         }
-        public AnalyticEvents(){}
     }
 }

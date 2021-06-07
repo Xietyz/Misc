@@ -8,7 +8,7 @@ namespace TestProject1
     public class Tests
     {
         [Test]
-        public void AnaEventsClassTest()
+        public void AnalyticsEventsClassTest()
         {
             var testEvent = new AnalyticEvents(0, "start");
             var data = new List<AnalyticEvents>();
