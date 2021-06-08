@@ -18,8 +18,20 @@ namespace ConsoleApp2
         Error,
         End
     }
+    
     public class Analytics
     {
+        Dictionary<IDEvent, EState> StateDict
+        {
+            get
+            {
+                Dictionary<IDEvent, EState> dict = new Dictionary<IDEvent, EState>();
+                dict.Add(IDEvent.Create, EState.Created);
+                dict.Add(IDEvent.Action, EState.Created);
+                dict.Add(IDEvent.End, EState.Finished);
+                return dict;
+            }
+        }
         //task method
         public AnalyticEvents[] CalculateProgress(AnalyticEvents[] events)
         {
@@ -38,11 +50,18 @@ namespace ConsoleApp2
         public AnalyticEvents[] GetLatestEvents(AnalyticEvents[] events)
         {
             //var test = new List<IDEvent>();
-            var test = events
-                .GroupBy(x => x.Id)
-                .Select(g => g.Last()).ToArray();
+            var test = events.GroupBy(x => x.Id)
+                .Select(g => g.Last())
+                .ToArray();
 
             return test;
+        }
+        public EState GetState(AnalyticEvents[] events)
+        {
+            //get 1 id's state
+            var test = events.Select(x => x.Event).Last();
+            new Analytics().StateDict.TryGetValue(test, out EState state);
+            return state;
         }
     }
 

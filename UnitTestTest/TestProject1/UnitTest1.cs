@@ -57,5 +57,18 @@ namespace TestProject1
             var testData = new Analytics().GetLatestEvents(TestData.Basic);
             Assert.AreEqual(testData[0].Event, IDEvent.Action);
         }
+        [Test]
+        public void GetLastOfAllIDsProper()
+        {
+            var testData = new Analytics().GetLatestEvents(TestData.Basic);
+            Assert.IsTrue(testData.Select(x => x.Event)
+                .SequenceEqual(new IDEvent[] { IDEvent.Action, IDEvent.End, IDEvent.End, IDEvent.Error }));
+        }
+        [Test]
+        public void GetStateOfOneIDProper()
+        {
+            var testState = new Analytics().GetState(TestData.Basic.Where(x => x.Id == 1).ToArray());
+            Assert.AreEqual(EState.Finished, testState);
+        }
     }
 }

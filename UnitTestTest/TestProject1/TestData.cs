@@ -25,5 +25,15 @@ namespace TestProject1
                 };
             }
         }
+        internal static Dictionary<IDEvent, EState> StateDict
+        {
+            get {
+                Dictionary<IDEvent, EState> dict = new Dictionary<IDEvent, EState>();
+                dict.Add(IDEvent.Create, EState.Created);
+                dict.Add(IDEvent.Action, EState.Created);
+                dict.Add(IDEvent.End, EState.Finished);
+                return dict;
+            }
+        }
     }
 }
