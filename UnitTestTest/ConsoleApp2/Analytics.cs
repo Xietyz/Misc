@@ -18,7 +18,7 @@ namespace ConsoleApp2
         Error,
         End
     }
-    
+
     public class Analytics
     {
         Dictionary<IDEvent, EState> StateDict
@@ -29,6 +29,7 @@ namespace ConsoleApp2
                 dict.Add(IDEvent.Create, EState.Created);
                 dict.Add(IDEvent.Action, EState.Created);
                 dict.Add(IDEvent.End, EState.Finished);
+                dict.Add(IDEvent.Error, EState.Created);
                 return dict;
             }
         }
@@ -60,8 +61,29 @@ namespace ConsoleApp2
         {
             //get 1 id's state
             var test = events.Select(x => x.Event).Last();
-            new Analytics().StateDict.TryGetValue(test, out EState state);
+            StateDict.TryGetValue(test, out EState state);
             return state;
+        }
+        public EState[] GetStates(AnalyticEvents[] events)
+        {
+            var eventArray = GetLastEvents(events).ToArray();
+            var stateArray = new EState[eventArray.Count()];
+
+            for (int x = 0; x < stateArray.Count(); x++)
+            {
+                StateDict.TryGetValue(eventArray[x], out EState state);
+                stateArray[x] = state;
+            }
+            return stateArray;
+        }
+        public IDEvent[] GetLastEvents(AnalyticEvents[] events)
+        {
+            var filteredEvents = events.GroupBy(x => x.Id)
+            .Select(g => g.Last())
+            .OrderBy(x => x.Id)
+            .Select(x => x.Event)
+            .ToArray();
+            return filteredEvents;
         }
     }
 
@@ -69,7 +91,7 @@ namespace ConsoleApp2
     {
         public int Id { get; }
         public IDEvent Event { get; }
-        
+
         public AnalyticEvents(int id, IDEvent ev)
         {
             Id = id;

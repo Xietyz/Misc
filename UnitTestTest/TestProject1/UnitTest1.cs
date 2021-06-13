@@ -52,13 +52,13 @@ namespace TestProject1
         }
 
         [Test]
-        public void GetLastOfOneIDProper()
+        public void GetLastEventOfOneIDProper()
         {
             var testData = new Analytics().GetLatestEvents(TestData.Basic);
             Assert.AreEqual(testData[0].Event, IDEvent.Action);
         }
         [Test]
-        public void GetLastOfAllIDsProper()
+        public void GetLastEventOfAllIDsProper()
         {
             var testData = new Analytics().GetLatestEvents(TestData.Basic);
             Assert.IsTrue(testData.Select(x => x.Event)
@@ -69,6 +69,12 @@ namespace TestProject1
         {
             var testState = new Analytics().GetState(TestData.Basic.Where(x => x.Id == 1).ToArray());
             Assert.AreEqual(EState.Finished, testState);
+        }
+        [Test]
+        public void GetStateOfAllIDs()
+        {
+            var testStates = new Analytics().GetStates(TestData.Basic);
+            Assert.IsTrue(testStates.SequenceEqual(new EState[] { EState.Created, EState.Finished, EState.Finished, EState.Created }));
         }
     }
 }
