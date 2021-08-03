@@ -16,7 +16,7 @@ namespace LinkedList
         }
         public void push(string val)
         {
-            if(maxPointer > values.Length)
+            if (maxPointer > values.Length - 1)
             {
                 values = copy(values.Length + 1, values);
             };
@@ -36,14 +36,11 @@ namespace LinkedList
         // get
         public ListElement getEle(int desiredElePos)
         {
-            ListElement returnEl = new ListElement();
-            //for (int x = 0; x < values.Length; x++)
-            //{
-            //    if (values[x].pointer == desiredElePos)
-            //    {
-            //        return values[x];
-            //    }
-            //}
+            ListElement returnEl = firstEl;
+            for (int x = 0; x < desiredElePos - 1; x++)
+            {
+                returnEl = returnEl.next;
+            }
             return returnEl;
         }
         public void printAll()
