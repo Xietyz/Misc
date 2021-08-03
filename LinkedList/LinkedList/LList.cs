@@ -27,17 +27,38 @@ namespace LinkedList
                 firstEl = newEl;
             } else
             {
+                ListElement TESTPREV = values[maxPointer - 1];
                 newEl = new ListElement(values[maxPointer - 1], val, maxPointer);
-                newEl.prev.next = newEl;
+                TESTPREV.next = newEl;
             }
             values[maxPointer] = newEl;
             maxPointer++;
         }
-        // get
-        public ListElement getEle(int desiredElePos)
+        public void deleteEle(int elePos)
+        {
+            ListElement eleToDelete = firstEl;
+            for (int x = 0; x < elePos; x++)
+            {
+                eleToDelete = eleToDelete.next;
+            }
+            if (eleToDelete == firstEl)
+            {
+                firstEl = firstEl.next;
+            } 
+            else
+            {
+                ListElement prevEle = eleToDelete.prev;
+                ListElement nextEle = eleToDelete.next;
+                prevEle.next = nextEle;
+                nextEle.prev = prevEle;
+            }
+            maxPointer--;
+            values = copy(values.Length - 1, values);
+        }
+        public ListElement getEle(int elePos)
         {
             ListElement returnEl = firstEl;
-            for (int x = 0; x < desiredElePos - 1; x++)
+            for (int x = 0; x < elePos - 1; x++)
             {
                 returnEl = returnEl.next;
             }
@@ -55,10 +76,15 @@ namespace LinkedList
         public ListElement[] copy(int newSize, ListElement[] original)
         {
             ListElement[] tempValues = new ListElement[newSize];
+            ListElement newElement = firstEl;
             for (int x = 0; x < original.Length; x++)
             {
-                tempValues[x] = original[x];
-            };
+                if (newElement != null)
+                {
+                    tempValues[x] = newElement;
+                    newElement = newElement.next;
+                }
+            }
             return tempValues;
         }
     }

@@ -14,6 +14,13 @@ namespace LinkedList
             myList.push("4th el");
             myList.printAll();
             Console.WriteLine("3rd Element: " + myList.getEle(3).value);
+            Console.WriteLine("DELETING SECOND ELEMENT: ");
+            myList.deleteEle(0);
+            myList.printAll();
+            Console.WriteLine("ADDING NEW 5TH ELEMENT: ");
+            myList.push("5th ele");
+            myList.printAll();
+            // write tests? 
         }
     }
 }
