@@ -4,88 +4,137 @@ using System.Text;
 
 namespace LinkedList
 {
-    class LList
+    class LList : ILinkedList
     {
-        public int maxPointer = 0;
-        ListElement[] values;
-        ListElement firstEl;
-        ListElement lastEl;
-        public LList(int listSize)
+        ListElement firstElement;
+        public void Add(int position, string data)
         {
-            values = new ListElement[listSize];
-        }
-        public void push(string val)
-        {
-            if (maxPointer > values.Length - 1)
+            // at position
+            ListElement newElement = new ListElement(data);
+            ListElement currentElement = firstElement;
+            if (position == 0)
             {
-                values = copy(values.Length + 1, values);
-            };
-            ListElement newEl;
-            if (maxPointer == 0)
-            {
-                newEl = new ListElement(val, maxPointer);
-                firstEl = newEl;
-            } else
-            {
-                ListElement TESTPREV = values[maxPointer - 1];
-                newEl = new ListElement(values[maxPointer - 1], val, maxPointer);
-                TESTPREV.next = newEl;
+                newElement.next = currentElement;
+                firstElement = newElement;
             }
-            values[maxPointer] = newEl;
-            maxPointer++;
-        }
-        public void deleteEle(int elePos)
-        {
-            ListElement eleToDelete = firstEl;
-            for (int x = 0; x < elePos; x++)
-            {
-                eleToDelete = eleToDelete.next;
-            }
-            if (eleToDelete == firstEl)
-            {
-                firstEl = firstEl.next;
-            } 
             else
             {
-                ListElement prevEle = eleToDelete.prev;
-                ListElement nextEle = eleToDelete.next;
-                prevEle.next = nextEle;
-                nextEle.prev = prevEle;
+                for (int x = 1; x < position; x++)
+                {
+                    currentElement = currentElement.next;
+                }
+                newElement.next = currentElement.next;
+                currentElement.next = newElement;
             }
-            maxPointer--;
-            values = copy(values.Length - 1, values);
         }
-        public ListElement getEle(int elePos)
+        public void Add(string dataToAddAfter, string nextData)
         {
-            ListElement returnEl = firstEl;
-            for (int x = 0; x < elePos - 1; x++)
+            // add after found data
+            ListElement currentElement = firstElement;
+            while (currentElement.value != dataToAddAfter)
             {
-                returnEl = returnEl.next;
+                currentElement = currentElement.next;
             }
-            return returnEl;
+            ListElement newElement = new ListElement(nextData);
+            newElement.next = currentElement.next;
+            currentElement.next = newElement;
         }
-        public void printAll()
+        public void Add(string data)
         {
-            ListElement currentEl = firstEl;
-            while(currentEl != null)
+            // add at start
+            if (firstElement == null)
+            {
+                firstElement = new ListElement(data);
+            }
+            else
+            {
+                ListElement newElement = new ListElement(data);
+                newElement.next = firstElement;
+                firstElement = newElement;
+            }
+        }
+        public void Delete(int position)
+        {
+            ListElement elementToDelete = firstElement;
+            ListElement previousElement = firstElement;
+            for (int x = 0; x < position; x++)
+            {
+                previousElement = elementToDelete;
+                elementToDelete = elementToDelete.next;
+            }
+            if (elementToDelete == firstElement)
+            {
+                firstElement = firstElement.next;
+            }
+            else
+            {
+                previousElement.next = elementToDelete.next;
+            }
+        }
+        public void Delete(string data)
+        {
+            ListElement elementToDelete = firstElement;
+            ListElement previousElement = firstElement;
+            while (elementToDelete.value != data)
+            {
+                previousElement = elementToDelete;
+                elementToDelete = elementToDelete.next;
+            }
+            if (elementToDelete.value.Equals(data))
+            {
+                if (elementToDelete == firstElement)
+                {
+                    firstElement = firstElement.next;
+                }
+                else
+                {
+                    previousElement.next = elementToDelete.next;
+                }
+            }
+        }
+        public void Replace(string oldData, string newData)
+        {
+            ListElement newElement = new ListElement(newData);
+            ListElement elementToReplace = firstElement;
+            ListElement previousElement = null;
+            if (firstElement.value == oldData)
+            {
+                newElement.next = firstElement.next;
+                firstElement = newElement;
+            }
+            else
+            {
+                while (elementToReplace.value != oldData)
+                {
+                    previousElement = elementToReplace;
+                    elementToReplace = elementToReplace.next;
+                }
+
+                if (previousElement != null)
+                {
+                    previousElement.next = newElement;
+                }
+                newElement.next = elementToReplace.next;
+                elementToReplace.next = newElement;
+            }
+        }
+        public ListElement Get(int position)
+        {
+            ListElement returnElement = firstElement;
+            for (int x = 0; x < position; x++)
+            {
+                returnElement = returnElement.next;
+            }
+            return returnElement;
+        }
+        public void PrintAll()
+        {
+            ListElement currentEl = firstElement;
+            while (currentEl != null)
             {
                 Console.WriteLine(currentEl.value);
                 currentEl = currentEl.next;
             }
-        }
-        public ListElement[] copy(int newSize, ListElement[] original)
-        {
-            ListElement[] tempValues = new ListElement[newSize];
-            ListElement newElement = firstEl;
-            for (int x = 0; x < original.Length; x++)
-            {
-                if (newElement != null)
-                {
-                    tempValues[x] = newElement;
-                    newElement = newElement.next;
-                }
-            }
-            return tempValues;
         }
     }
 }

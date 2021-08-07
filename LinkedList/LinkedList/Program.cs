@@ -6,21 +6,35 @@ namespace LinkedList
     {
         static void Main(string[] args)
         {
-            LList myList = new LList(3);
-            myList.push("First el");
-            myList.push("Second El");
-            myList.push("Third el");
+            LList myList = new LList();
+            myList.Add("1st");
+            myList.Add("2nd");
+            myList.Add("3rd");
+            myList.Add("4th");
+            myList.PrintAll();
+            Console.WriteLine();
 
-            myList.push("4th el");
-            myList.printAll();
-            Console.WriteLine("3rd Element: " + myList.getEle(3).value);
-            Console.WriteLine("DELETING SECOND ELEMENT: ");
-            myList.deleteEle(0);
-            myList.printAll();
-            Console.WriteLine("ADDING NEW 5TH ELEMENT: ");
-            myList.push("5th ele");
-            myList.printAll();
-            // write tests? 
+            myList.Add(0, "NEW 1");
+            myList.PrintAll();
+            Console.WriteLine();
+
+            myList.Add("4th", "NEW 2");
+            myList.PrintAll();
+            Console.WriteLine();
+
+            myList.Delete(4);
+            myList.PrintAll();
+            Console.WriteLine();
+
+            myList.Delete("3rd");
+            myList.PrintAll();
+            Console.WriteLine();
+
+            myList.Replace("NEW 1", "REPLACED");
+            myList.PrintAll();
+            Console.WriteLine();
+
+            Console.WriteLine(myList.Get(0).value);
         }
     }
 }
