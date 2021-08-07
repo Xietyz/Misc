@@ -52,7 +52,6 @@ public class Program
         Console.WriteLine(dictPerson.ToString());
 
         // 4. Write linq statement for first Person Older Than 40 In Descending Alphabetical Order By First Name
-        //Console.WriteLine("First Person Older Than 40 in Descending Order by First Name " + person2.ToString());
         Person personOver40 = people.Where(x => x.Age > 40).First();
         Console.WriteLine(personOver40.ToString());
         Console.WriteLine();
