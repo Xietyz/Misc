@@ -55,21 +55,35 @@ public class Program
         //Console.WriteLine("First Person Older Than 40 in Descending Order by First Name " + person2.ToString());
         Person personOver40 = people.Where(x => x.Age > 40).First();
         Console.WriteLine(personOver40.ToString());
+        Console.WriteLine();
 
         //5. write a linq statement that finds all the people who are part of a family. (aka there is at least one other person with the same surname.
-
+        var families = people.GroupBy(x => x.LastName).Where(x => x.Count() > 1);
+        foreach (var family in families)
+        {
+            foreach(var person in family)
+            {
+                Console.WriteLine(person.ToString());
+            }
+        }
+        Console.WriteLine();
         //6. Write a linq statement that finds which of the following numbers are multiples of 4 or 6
         List<int> mixedNumbers = new List<int>()
             {
                 15, 8, 21, 24, 32, 13, 30, 12, 7, 54, 48, 4, 49, 96
             };
-
-
+        var multiples = mixedNumbers.Where(x => x % 4 == 0 || x % 6 == 0);
+        foreach (var number in multiples)
+        {
+            Console.WriteLine(number);
+        }
+        Console.WriteLine();
         // 7. How much money have we made?
         List<double> purchases = new List<double>()
             {
                 2340.29, 745.31, 21.76, 34.03, 4786.45, 879.45, 9442.85, 2454.63, 45.65
             };
+        Console.WriteLine("We have made: " + purchases.Sum());
     }
 
 
