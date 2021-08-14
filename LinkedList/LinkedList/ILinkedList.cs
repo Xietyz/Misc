@@ -4,27 +4,27 @@ using System.Text;
 
 namespace LinkedList
 {
-    public interface ILinkedList
+    public interface ILinkedList<T>
     {
         /// <summary>
         /// add at position
         /// </summary>
-        void Add(int postion, string data);
+        void Add(int postion, T data);
         /// <summary>
         /// add after data
         /// </summary>
-        void Add(string dataToAddAfter, string nextData);
+        void Add(T dataToAddAfter, T nextData);
         /// <summary>
         /// add at start
         /// </summary>
-        void Add(string data);
+        void Add(T data);
 
 
         void Delete(int postion);
-        void Delete(string data);
+        void Delete(T data);
 
-        ListElement Get(int position);
+        ListElement<T> Get(int position);
 
-        void Replace(string oldData, string newData);
+        void Replace(T oldData, T newData);
     }
 }

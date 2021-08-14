@@ -6,7 +6,8 @@ namespace LinkedList
     {
         static void Main(string[] args)
         {
-            LList myList = new LList();
+            LList<string> myList = new LList<string>();
+
             myList.Add("1st");
             myList.Add("2nd");
             myList.Add("3rd");

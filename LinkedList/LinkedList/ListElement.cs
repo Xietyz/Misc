@@ -4,12 +4,11 @@ using System.Text;
 
 namespace LinkedList
 {
-    public class ListElement
+    public class ListElement<T>
     {
-        public ListElement next;
-        public int pointer;
-        public string value;
-        public ListElement(string newVal)
+        public ListElement<T> next;
+        public T value;
+        public ListElement(T newVal)
         {
             value = newVal;
         }
