@@ -21,6 +21,10 @@ namespace LinkedList
             {
                 for (int x = 1; x < position; x++)
                 {
+                    if (currentElement.next == null)
+                    {
+                        return;
+                    }
                     currentElement = currentElement.next;
                 }
                 newElement.next = currentElement.next;
@@ -33,6 +37,10 @@ namespace LinkedList
             ListElement currentElement = firstElement;
             while (currentElement.value != dataToAddAfter)
             {
+                if (currentElement.next == null)
+                {
+                    return;
+                }
                 currentElement = currentElement.next;
             }
             ListElement newElement = new ListElement(nextData);
