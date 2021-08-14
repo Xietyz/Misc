@@ -6,16 +6,16 @@ namespace LinkedList
 {
     class LList : ILinkedList
     {
-        ListElement firstElement;
+        ListElement _firstElement;
         public void Add(int position, string data)
         {
             // at position
             ListElement newElement = new ListElement(data);
-            ListElement currentElement = firstElement;
+            ListElement currentElement = _firstElement;
             if (position == 0)
             {
                 newElement.next = currentElement;
-                firstElement = newElement;
+                _firstElement = newElement;
             }
             else
             {
@@ -23,7 +23,7 @@ namespace LinkedList
                 {
                     if (currentElement.next == null)
                     {
-                        return;
+                        throw new Exception("Out of bounds");
                     }
                     currentElement = currentElement.next;
                 }
@@ -34,12 +34,12 @@ namespace LinkedList
         public void Add(string dataToAddAfter, string nextData)
         {
             // add after found data
-            ListElement currentElement = firstElement;
+            ListElement currentElement = _firstElement;
             while (currentElement.value != dataToAddAfter)
             {
                 if (currentElement.next == null)
                 {
-                    return;
+                    throw new Exception("Out of bounds");
                 }
                 currentElement = currentElement.next;
             }
@@ -50,29 +50,29 @@ namespace LinkedList
         public void Add(string data)
         {
             // add at start
-            if (firstElement == null)
+            if (_firstElement == null)
             {
-                firstElement = new ListElement(data);
+                _firstElement = new ListElement(data);
             }
             else
             {
                 ListElement newElement = new ListElement(data);
-                newElement.next = firstElement;
-                firstElement = newElement;
+                newElement.next = _firstElement;
+                _firstElement = newElement;
             }
         }
         public void Delete(int position)
         {
-            ListElement elementToDelete = firstElement;
-            ListElement previousElement = firstElement;
+            ListElement elementToDelete = _firstElement;
+            ListElement previousElement = _firstElement;
             for (int x = 0; x < position; x++)
             {
                 previousElement = elementToDelete;
                 elementToDelete = elementToDelete.next;
             }
-            if (elementToDelete == firstElement)
+            if (elementToDelete == _firstElement)
             {
-                firstElement = firstElement.next;
+                _firstElement = _firstElement.next;
             }
             else
             {
@@ -81,8 +81,8 @@ namespace LinkedList
         }
         public void Delete(string data)
         {
-            ListElement elementToDelete = firstElement;
-            ListElement previousElement = firstElement;
+            ListElement elementToDelete = _firstElement;
+            ListElement previousElement = _firstElement;
             while (elementToDelete.value != data)
             {
                 previousElement = elementToDelete;
@@ -90,9 +90,9 @@ namespace LinkedList
             }
             if (elementToDelete.value.Equals(data))
             {
-                if (elementToDelete == firstElement)
+                if (elementToDelete == _firstElement)
                 {
-                    firstElement = firstElement.next;
+                    _firstElement = _firstElement.next;
                 }
                 else
                 {
@@ -103,12 +103,12 @@ namespace LinkedList
         public void Replace(string oldData, string newData)
         {
             ListElement newElement = new ListElement(newData);
-            ListElement elementToReplace = firstElement;
+            ListElement elementToReplace = _firstElement;
             ListElement previousElement = null;
-            if (firstElement.value == oldData)
+            if (_firstElement.value == oldData)
             {
-                newElement.next = firstElement.next;
-                firstElement = newElement;
+                newElement.next = _firstElement.next;
+                _firstElement = newElement;
             }
             else
             {
@@ -128,7 +128,7 @@ namespace LinkedList
         }
         public ListElement Get(int position)
         {
-            ListElement returnElement = firstElement;
+            ListElement returnElement = _firstElement;
             for (int x = 0; x < position; x++)
             {
                 returnElement = returnElement.next;
@@ -137,7 +137,7 @@ namespace LinkedList
         }
         public void PrintAll()
         {
-            ListElement currentEl = firstElement;
+            ListElement currentEl = _firstElement;
             while (currentEl != null)
             {
                 Console.WriteLine(currentEl.value);
