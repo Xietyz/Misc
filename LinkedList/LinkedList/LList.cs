@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,41 +7,22 @@ namespace LinkedList
 {
     class LList<T> : ILinkedList<T>
     {
-        ListElement<T> _firstElement;
-        public void PrintBigrams()
+        public ListElement<T> _firstElement;
+        public IEnumerator<T> GetEnumerator()
         {
-            var bigramDict = GetBigramDict();
-            foreach(KeyValuePair<string, int> bigram in bigramDict)
+            var current = _firstElement;
+            while (current != null)
             {
-                Console.WriteLine(bigram.Key + " - " + bigram.Value);
+                yield return current.value;
+                current = current.next;
             }
         }
-        public Dictionary<string, int> GetBigramDict()
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            Dictionary<string, int> bigramDictionary = new Dictionary<string, int>();
-            var currentElement = _firstElement;
-            while (currentElement != null)
-            {
-                for (int x = 0; x < currentElement.value.ToString().Length - 1; x++)
-                {
-                    var currentBigramCheck = currentElement.value.ToString().Substring(x, 2);
-                    currentBigramCheck = currentBigramCheck.ToLower();
-                    currentBigramCheck = currentBigramCheck.Replace(" ", "_");
-                    if (bigramDictionary.ContainsKey(currentBigramCheck))
-                    {
-                        bigramDictionary.TryGetValue(currentBigramCheck, out int bigramCount);
-                        bigramDictionary[currentBigramCheck] = bigramCount + 1;
-                    }
-                    else
-                    {
-                        bigramDictionary.Add(currentBigramCheck, 1);
-                    }
-                }
-                currentElement = currentElement.next;
-            }
-            return bigramDictionary;
+            return GetEnumerator();
         }
-        public void Add(int position, T data)
+
+        public void AddAtPos(int position, T data)
         {
             // at position
             var newElement = new ListElement<T>(data);
@@ -64,7 +46,7 @@ namespace LinkedList
                 currentElement.next = newElement;
             }
         }
-        public void Add(T dataToAddAfter, T nextData)
+        public void AddAfterData(T dataToAddAfter, T nextData)
         {
             // add after found data
             var currentElement = _firstElement;
@@ -80,7 +62,7 @@ namespace LinkedList
             newElement.next = currentElement.next;
             currentElement.next = newElement;
         }
-        public void Add(T data)
+        public void AddAtStart(T data)
         {
             // add at start
             if (_firstElement == null)
@@ -94,7 +76,7 @@ namespace LinkedList
                 _firstElement = newElement;
             }
         }
-        public void Delete(int position)
+        public void DeletePos(int position)
         {
             var elementToDelete = _firstElement;
             var previousElement = _firstElement;
@@ -112,7 +94,7 @@ namespace LinkedList
                 previousElement.next = elementToDelete.next;
             }
         }
-        public void Delete(T data)
+        public void DeleteData(T data)
         {
             var elementToDelete = _firstElement;
             var previousElement = _firstElement;
