@@ -1,4 +1,6 @@
 ## CURRENT TASK TO DO
+count bi-grams
+turn linked list to generic (T)
 ## OLD
 you are passed a list of IDs and an object containing a string 'event' (the state) and the corresponding ID.
 write tests to figure out which state the ID is on and/or which events is has passed.

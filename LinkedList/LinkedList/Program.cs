@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 
 namespace LinkedList
 {
@@ -39,16 +38,10 @@ namespace LinkedList
             //Console.WriteLine(myList.Get(0).value);
 
             LList<string> bigramList = new LList<string>();
-            Bigram<string> bigraminator = new Bigram<string>();
-            bigramList.AddAtStart("Sean Sean");
-            bigramList.AddAtStart("Sean Sean");
-            bigramList.AddAtStart("Broseph");
-            Console.WriteLine();
-            foreach (string bro in bigramList)
-            {
-                Console.WriteLine(bro);
-            }
-            bigraminator.PrintBigrams(bigramList);
+            bigramList.Add("Sean Sean");
+            bigramList.Add("Sean Sean");
+            bigramList.Add("Broseph");
+            bigramList.PrintBigrams();
         }
     }
 }

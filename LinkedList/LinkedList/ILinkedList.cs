@@ -1,28 +1,27 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
 namespace LinkedList
 {
-    public interface ILinkedList<T>: IEnumerable
+    public interface ILinkedList<T>
     {
         /// <summary>
         /// add at position
         /// </summary>
-        void AddAtPos(int postion, T data);
+        void Add(int postion, T data);
         /// <summary>
         /// add after data
         /// </summary>
-        void AddAfterData(T dataToAddAfter, T nextData);
+        void Add(T dataToAddAfter, T nextData);
         /// <summary>
         /// add at start
         /// </summary>
-        void AddAtStart(T data);
+        void Add(T data);
 
 
-        void DeletePos(int postion);
-        void DeleteData(T data);
+        void Delete(int postion);
+        void Delete(T data);
 
         ListElement<T> Get(int position);
 
