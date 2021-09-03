@@ -12,6 +12,6 @@ namespace Pnl
             Pnls = new List<Pnl>();
         }
         public string Strategy { get; set; }
-        public List<Pnl> Pnls { get; set; } 
+        public List<Pnl> Pnls { get; set; }
     }
 }

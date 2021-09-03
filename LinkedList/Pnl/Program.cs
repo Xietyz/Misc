@@ -13,8 +13,7 @@ namespace Pnl
             // strategy columns (strat name + all Pnls in them) = list in StrategyList (stratpnl)
             // Pnls have a date + value
             var streamReader = File.OpenText("pnl.csv");
-            StrategyList = InitStrategyList(streamReader);
-            InitStrategyList(streamReader);
+            StrategyList = InitStrategyList(streamReader).ToList();
             PopulateStrategyList(streamReader);
             PrintStrategyPnls(15);
         }
@@ -33,17 +32,13 @@ namespace Pnl
                 }
             }
         }
-
-        private static List<StrategyPnl> InitStrategyList(StreamReader streamReader)
+        private static IEnumerable<StrategyPnl> InitStrategyList(StreamReader streamReader)
         {
-            List<StrategyPnl> stratPanelList = new List<StrategyPnl>();
             string[] columnHeaders = streamReader.ReadLine().Split(",");
             foreach (string column in columnHeaders.Skip(1))
             {
-                StrategyPnl newSP = new StrategyPnl(column);
-                stratPanelList.Add(newSP);
+                yield return new StrategyPnl(column);
             }
-            return stratPanelList;
         }
 
         public static void PrintStrategyPnls(int strategyNumber)
