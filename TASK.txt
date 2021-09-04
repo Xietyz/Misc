@@ -1,4 +1,10 @@
 ## CURRENT TASK TO DO
+https://github.com/changetocoding/CSharpTraining/blob/main/Lesson3-UnitTesting.md
+task 2 do
+name can be int or string (string <5 chars)
+number must be long
+project should be a class library (fiddle in properties)
+nuget test sdk and nunit3testadapter needed
 ## OLD
 you are passed a list of IDs and an object containing a string 'event' (the state) and the corresponding ID.
 write tests to figure out which state the ID is on and/or which events is has passed.
