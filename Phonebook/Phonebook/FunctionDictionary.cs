@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Phonebook
 {
-    class FunctionDictionary
+    public class FunctionDictionary
     {
         const int StringSizeLimit = 4;
         public Dictionary<string, Func<string>> Functions;
@@ -29,7 +29,10 @@ namespace Phonebook
         }
         public string GetNumber()
         {
-            StringSizeCheck(InputValue);
+            if (StringSizeCheck(InputValue))
+            {
+                return "Name too large";
+            };
             long numberToReturn = 0;
             try
             {
@@ -45,8 +48,15 @@ namespace Phonebook
         {
             string newName = InputValue.Split(" ")[0]; ;
             long newNumber = long.Parse(InputValue.Split(" ")[1]);
-            StringSizeCheck(newName);
-            NumberSizeCheck(newNumber);
+            if (StringSizeCheck(newName)) 
+            {
+                return "Name too large";
+            };
+            if (NumberSizeCheck(newNumber))
+            {
+                return "Number too large";
+            };
+
 
             ContactDict.Add(newName, newNumber);
             return "Stored " + newName + " - " + newNumber;
@@ -56,30 +66,37 @@ namespace Phonebook
             string nameToDelete = InputValue;
             ContactDict.TryGetValue(nameToDelete, out long numberToDelete);
             ContactDict.Remove(nameToDelete);
-            return "DELETED " +numberToDelete.ToString();
+            return "DELETED " + numberToDelete.ToString();
         }
         public string UpdateNumber()
         {
             string whoseNumberToUpdate = InputValue.Split(" ")[0];
             long numberToUpdate = long.Parse(InputValue.Split(" ")[1]);
-            NumberSizeCheck(numberToUpdate);
+            if (NumberSizeCheck(numberToUpdate))
+            {
+                return "Number too large";
+            };
             ContactDict.TryGetValue(whoseNumberToUpdate, out long oldNumber);
             ContactDict[whoseNumberToUpdate] = numberToUpdate;
             return "UPDATED FROM " + oldNumber;
         }
-        public void StringSizeCheck(string stringToCheck)
+        public bool StringSizeCheck(string stringToCheck)
         {
             if (stringToCheck.Length > StringSizeLimit)
             {
-                throw new ArgumentException(stringToCheck + " is over character limit of " + StringSizeLimit);
+                return true;
+                //throw new ArgumentException(stringToCheck + " is over character limit of " + StringSizeLimit);
             }
+            return false;
         }
-        public void NumberSizeCheck(long numberToCheck)
+        public bool NumberSizeCheck(long numberToCheck)
         {
             if (numberToCheck.ToString().Length <= 11)
             {
-                throw new ArgumentException("Number too large");
+                return true;
+                //throw new ArgumentException("Number too large");
             }
+            return false;
         }
         public string Execute(string input)
         {
@@ -89,7 +106,7 @@ namespace Phonebook
             {
                 InputValue = inputArray[1] + " " + inputArray[2];
                 Console.WriteLine(InputValue);
-            } 
+            }
             else if (input.Split(" ").Count() == 2)
             {
                 InputValue = input.Split(" ")[1];
@@ -98,7 +115,7 @@ namespace Phonebook
             {
                 return "EXITING";
             }
-            
+
             return Functions[InputCommand]();
         }
         //public string CommandFromInput(string input)

@@ -6,7 +6,6 @@ namespace Phonebook
 {
     class Program
     {
-        const int StringSizeLimit = 4;
         static void Main(string[] args)
         {
             FunctionDictionary functionDict = new FunctionDictionary();
