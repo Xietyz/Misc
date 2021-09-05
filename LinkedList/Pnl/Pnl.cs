@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Pnl
+namespace CsvPnl
 {
-    class Pnl
+    public class Pnl
     {
         public Pnl(DateTime newDate, decimal newAmount)
         {

@@ -33,16 +33,15 @@ namespace Phonebook
             {
                 return "Name too large";
             };
-            long numberToReturn = 0;
             try
             {
-                ContactDict.TryGetValue(InputValue, out numberToReturn);
+                return ContactDict[InputValue].ToString();
             }
             catch
             {
                 Console.WriteLine("No contact " + InputValue);
+                return null;
             }
-            return numberToReturn.ToString();
         }
         public string StoreContact()
         {
@@ -91,7 +90,7 @@ namespace Phonebook
         }
         public bool NumberSizeCheck(long numberToCheck)
         {
-            if (numberToCheck.ToString().Length <= 11)
+            if (numberToCheck.ToString().Length > 11)
             {
                 return true;
                 //throw new ArgumentException("Number too large");

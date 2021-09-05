@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Pnl
+namespace CsvPnl
 {
-    class StrategyPnl
+    public class StrategyPnl
     {
         public StrategyPnl(string newStrategy)
         {

@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using Phonebook;
+using System;
 
 namespace PhonebookTests.PhonebookBasicTests
 {
@@ -16,32 +17,55 @@ namespace PhonebookTests.PhonebookBasicTests
         [Test]
         public void CanGetNumberByContact()
         {
+            FunctionDictionary dictionary = new FunctionDictionary();
 
+            dictionary.ContactDict.Add("test", 12345678910);
+
+            Assert.AreEqual(dictionary.Execute("GET test"), "12345678910");
         }
         [Test]
         public void CanAddContact()
         {
+            FunctionDictionary dictionary = new FunctionDictionary();
 
+            dictionary.Execute("STORE t1 10987654321");
+
+            Assert.AreEqual(dictionary.Execute("GET t1"), "10987654321");
         }
         [Test]
         public void CanDeleteContact()
         {
+            FunctionDictionary dictionary = new FunctionDictionary();
 
+            dictionary.Execute("STORE t1 10987654321");
+            dictionary.Execute("DELETE t1");
+
+            Assert.IsNull(dictionary.Execute("GET t1"));
         }
         [Test]
         public void CanUpdateContact()
         {
+            FunctionDictionary dictionary = new FunctionDictionary();
 
+            dictionary.Execute("STORE t1 10987654321");
+            dictionary.Execute("UPDATE t1 1234");
+
+            Assert.AreEqual(dictionary.Execute("GET t1"), "1234");
         }
         [Test]
         public void DoesNotAllowNamesOver4Characters()
         {
+            FunctionDictionary dictionary = new FunctionDictionary();
 
+            Assert.AreEqual(dictionary.Execute("STORE test1 123"), "Name too large");
+            Assert.AreEqual(dictionary.Execute("GET test1"), "Name too large");
         }
         [Test]
         public void DoesNotAllowNumbersOver11Digits()
         {
+            FunctionDictionary dictionary = new FunctionDictionary();
 
+            Assert.AreEqual(dictionary.Execute("STORE t1 1234567891011"), "Number too large");
         }
     }
 }
