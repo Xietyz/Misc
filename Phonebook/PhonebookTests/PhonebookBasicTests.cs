@@ -67,5 +67,31 @@ namespace PhonebookTests.PhonebookBasicTests
 
             Assert.AreEqual(dictionary.Execute("STORE t1 1234567891011"), "Number too large");
         }
+        [Test]
+        public void DisplaysErrorOnInvalidCommand()
+        {
+            FunctionDictionary dictionary = new FunctionDictionary();
+
+            Assert.AreEqual(dictionary.Execute("STORES t1 abc1"), "Invalid input");
+            Assert.AreEqual(dictionary.Execute("WDAFWGfa 22"), "Invalid input");
+        }
+        [Test]
+        public void DisplaysErrorOnNumberWithCharacters()
+        {
+            FunctionDictionary dictionary = new FunctionDictionary();
+
+            dictionary.Execute("STORE t2 123");
+
+            Assert.AreEqual(dictionary.Execute("STORE t1 abc1"), "Number should only be digits");
+            Assert.AreEqual(dictionary.Execute("UPDATE t2 72ds"), "Number should only be digits");
+        }
+        [Test]
+        public void DisplaysErrorWhenContactNotFound()
+        {
+            FunctionDictionary dictionary = new FunctionDictionary();
+
+            Assert.AreEqual(dictionary.Execute("DELETE t1"), "Does not exist");
+            Assert.AreEqual(dictionary.Execute("UPDATE t2 123"), "Does not exist");
+        }
     }
 }

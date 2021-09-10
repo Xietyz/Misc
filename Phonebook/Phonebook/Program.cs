@@ -10,7 +10,7 @@ namespace Phonebook
         {
             FunctionDictionary functionDict = new FunctionDictionary();
             Console.WriteLine("--- PHONE BOOK ---");
-            Console.WriteLine("COMMANDS: GET, STORE, DEL, UPDATE, EXIT");
+            Console.WriteLine("COMMANDS: GET, STORE, DELETE, UPDATE");
             Console.WriteLine();
             string input = "";
             while (!input.Equals("EXIT"))

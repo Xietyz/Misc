@@ -45,8 +45,12 @@ namespace Phonebook
         }
         public string StoreContact()
         {
-            string newName = InputValue.Split(" ")[0]; ;
+            if (NumberOnlyHasDigitsCheck(InputValue.Split(" ")[1]))
+            {
+                return "Number should only be digits";
+            }
             long newNumber = long.Parse(InputValue.Split(" ")[1]);
+            string newName = InputValue.Split(" ")[0];
             if (StringSizeCheck(newName)) 
             {
                 return "Name too large";
@@ -64,17 +68,29 @@ namespace Phonebook
         {
             string nameToDelete = InputValue;
             ContactDict.TryGetValue(nameToDelete, out long numberToDelete);
+            if (!ContactDict.ContainsKey(nameToDelete))
+            {
+                return "Does not exist";
+            }
             ContactDict.Remove(nameToDelete);
-            return "DELETED " + numberToDelete.ToString();
+            return "Deleted " + numberToDelete.ToString();
         }
         public string UpdateNumber()
         {
-            string whoseNumberToUpdate = InputValue.Split(" ")[0];
+            if (NumberOnlyHasDigitsCheck(InputValue.Split(" ")[1]))
+            {
+                return "Number should only be digits";
+            }
             long numberToUpdate = long.Parse(InputValue.Split(" ")[1]);
+            string whoseNumberToUpdate = InputValue.Split(" ")[0];
             if (NumberSizeCheck(numberToUpdate))
             {
                 return "Number too large";
             };
+            if (!ContactDict.ContainsKey(whoseNumberToUpdate))
+            {
+                return "Does not exist";
+            }
             ContactDict.TryGetValue(whoseNumberToUpdate, out long oldNumber);
             ContactDict[whoseNumberToUpdate] = numberToUpdate;
             return "UPDATED FROM " + oldNumber;
@@ -97,6 +113,14 @@ namespace Phonebook
             }
             return false;
         }
+        public bool NumberOnlyHasDigitsCheck(string numberToCheck)
+        {
+            if (!numberToCheck.All(char.IsDigit))
+            {
+                return true;
+            }
+            return false;
+        }
         public string Execute(string input)
         {
             string[] inputArray = input.Split(" ");
@@ -110,11 +134,10 @@ namespace Phonebook
             {
                 InputValue = input.Split(" ")[1];
             }
-            else
+            if (!Functions.ContainsKey(InputCommand))
             {
-                return "EXITING";
+                return "Invalid input";
             }
-
             return Functions[InputCommand]();
         }
         //public string CommandFromInput(string input)
