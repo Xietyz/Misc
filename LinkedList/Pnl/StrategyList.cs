@@ -8,14 +8,14 @@ namespace CsvPnl
     public class StrategyList : List<StrategyPnl>
     {
         // dont store list, pass on as parameter (?) keep for now
-        public string capitalDataFile = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "/Data/capital.csv";
-        public string pnlDataFile = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "/Data/pnl.csv";
-        public string regionDataFile = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "/Data/properties.csv";
+        public string CapitalDataFile = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "/Data/capital.csv";
+        public string PnlDataFile = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "/Data/pnl.csv";
+        public string RegionDataFile = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "/Data/properties.csv";
 
         public List<StrategyPnl> List;
         public StrategyList()
         {
-            List = InitStrategyList(pnlDataFile).ToList();
+            List = InitStrategyList(PnlDataFile).ToList();
         }
         public IEnumerable<StrategyPnl> InitStrategyList(string data)
         {
@@ -65,18 +65,6 @@ namespace CsvPnl
                     Pnl newPnl = new Pnl(currentDate, decimal.Parse(values[x]));
                     List[x - 1].Pnls.Add(newPnl);
                 }
-            }
-        }
-        public IEnumerable<string> PrintStrategyPnls(int strategyNumber)
-        {
-            if (strategyNumber > List.Count())
-            {
-                throw new Exception("Out of bounds");
-            }
-            foreach (Pnl pnl in List[strategyNumber - 1].Pnls)
-            {
-                Console.WriteLine(pnl.ToString());
-                yield return pnl.ToString();
             }
         }
     }

@@ -16,7 +16,7 @@ namespace CsvPnl
 
         public override string ToString()
         {
-            return "Date: " + Date.ToShortDateString() + " Value: " + Amount;
+            return "Date: " + Date.ToShortDateString() + " Capital: " + Amount;
         }
     }
 }

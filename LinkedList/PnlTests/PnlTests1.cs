@@ -28,7 +28,7 @@ namespace PnlTests
         {
             StrategyList stratList = new StrategyList();
 
-            stratList.PopulateStrategyListPnls(stratList.pnlDataFile);
+            stratList.PopulateStrategyListPnls(stratList.PnlDataFile);
 
             Assert.IsNotNull(stratList.List[1].Pnls);
             Assert.AreEqual(stratList.List[0].Pnls[0].Amount, 95045m);
@@ -37,9 +37,9 @@ namespace PnlTests
         public void StrategyListCanPrintPnlsForStrategy()
         {
             StrategyList stratList = new StrategyList();
-            stratList.PopulateStrategyListPnls(stratList.pnlDataFile);
+            stratList.PopulateStrategyListPnls(stratList.PnlDataFile);
 
-            string actualString = stratList.PrintStrategyPnls(1).ToList()[1];
+            string actualString = StrategyService.PrintStrategyPnls(1, stratList.List).ToList()[1];
             string expectedString = "Date: 04/01/2010 Value: -140135";
             Assert.AreEqual(actualString, expectedString);
         }
@@ -47,11 +47,11 @@ namespace PnlTests
         public void StrategyListDoesNotPrintOutOfBounds()
         {
             StrategyList stratList = new StrategyList();
-            stratList.PopulateStrategyListPnls(stratList.pnlDataFile);
+            stratList.PopulateStrategyListPnls(stratList.PnlDataFile);
 
             try
             {
-                List<string> s = stratList.PrintStrategyPnls(200).ToList();
+                List<string> s = StrategyService.PrintStrategyPnls(200, stratList.List).ToList();
                 Assert.Fail();
             }
             catch {}
@@ -62,8 +62,8 @@ namespace PnlTests
         {
             StrategyList stratList = new StrategyList();
 
-            stratList.PopulateStrategyListPnls(stratList.pnlDataFile);
-            stratList.PopulateStrategyListRegions(stratList.regionDataFile);
+            stratList.PopulateStrategyListPnls(stratList.PnlDataFile);
+            stratList.PopulateStrategyListRegions(stratList.RegionDataFile);
 
             Assert.AreEqual(stratList.List[0].Region, "AP");
         }
@@ -72,10 +72,21 @@ namespace PnlTests
         {
             StrategyList stratList = new StrategyList();
 
-            stratList.PopulateStrategyListPnls(stratList.pnlDataFile);
-            stratList.PopulateStrategyListCapital(stratList.capitalDataFile);
+            stratList.PopulateStrategyListPnls(stratList.PnlDataFile);
+            stratList.PopulateStrategyListCapital(stratList.CapitalDataFile);
 
             Assert.AreEqual(stratList.List[0].Capitals[0].Amount, 120500000m);
+        }
+        [Test]
+        public void ServiceCanReturnCapitalsOfStrategy()
+        {
+            StrategyList stratList = new StrategyList();
+
+            stratList.PopulateStrategyListPnls(stratList.PnlDataFile);
+            stratList.PopulateStrategyListCapital(stratList.CapitalDataFile);
+            string[] actual = StrategyService.PrintStrategyCapitals("Strategy1,Strategy2", stratList).ToArray();
+
+            Assert.AreEqual(actual[0], "Strategy1: Date: 01/01/2010 Capital: 120500000");
         }
     }
 }
