@@ -9,15 +9,8 @@ namespace CsvPnl
     {
         static void Main(string[] args)
         {
-            // strategy columns (strat name + all Pnls in them) = list in StrategyList (stratpnl)
-            // Pnls have a date + value
-            // var streamReader = File.OpenText("pnl.csv");
-            //StrategyList = InitStrategyList(streamReader).ToList();
-            //PopulateStrategyList(streamReader);
-            //PrintStrategyPnls(15);
-            //StrategyList StratList = new StrategyList();
             StrategyList stratList = new StrategyList();
-            stratList.PopulateStrategyList(stratList.CsvReader);
+            //stratList.PopulateStrategyListPnls(stratList.CsvReader);
         }
     }
 }

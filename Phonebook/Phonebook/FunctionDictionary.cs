@@ -21,7 +21,6 @@ namespace Phonebook
             ContactDict = new Dictionary<string, long>();
             Functions = new Dictionary<string, Func<string>>();
 
-            ContactDict.Add("con1", 123);
             Functions.Add("GET", GetNumber);
             Functions.Add("STORE", StoreContact);
             Functions.Add("DELETE", DeleteContact);
@@ -140,13 +139,5 @@ namespace Phonebook
             }
             return Functions[InputCommand]();
         }
-        //public string CommandFromInput(string input)
-        //{
-        //    return input.Split(" ")[0];
-        //}
-        //public string ValueFromInput(string input)
-        //{
-        //    return input.Split(" ")[1];
-        //}
     }
 }

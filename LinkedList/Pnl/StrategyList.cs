@@ -7,19 +7,58 @@ namespace CsvPnl
 {
     public class StrategyList : List<StrategyPnl>
     {
+        // dont store list, pass on as parameter (?) keep for now
+        public string capitalDataFile = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "/Data/capital.csv";
+        public string pnlDataFile = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "/Data/pnl.csv";
+        public string regionDataFile = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "/Data/properties.csv";
+
         public List<StrategyPnl> List;
-        public StreamReader CsvReader;
         public StrategyList()
         {
-            CsvReader = File.OpenText("pnl.csv");
-            List = InitStrategyList(CsvReader).ToList();
+            List = InitStrategyList(pnlDataFile).ToList();
         }
-        public void PopulateStrategyList(StreamReader streamReader)
+        public IEnumerable<StrategyPnl> InitStrategyList(string data)
         {
-            while (!streamReader.EndOfStream)
+            //string[] columnHeaders = streamReader.ReadLine().Split(",");
+            string[] columnHeaders = System.IO.File.ReadAllLines(data)[0].Split(",");
+            foreach (string column in columnHeaders.Skip(1))
             {
-                string currentLine = streamReader.ReadLine();
-                var values = currentLine.Split(",");
+                yield return new StrategyPnl(column);
+            }
+        }
+        public void PopulateStrategyListRegions(string data)
+        {
+            // populate strat's regions
+            // populate strategy's pnls
+            string[] csvRows = System.IO.File.ReadAllLines(data).Skip(1).ToArray();
+            for (int rowNumber = 0; rowNumber < csvRows.Length; rowNumber++)
+            {
+                var values = csvRows[rowNumber].Split(",");
+                List[rowNumber].Region = values[1];
+            }
+        }
+        public void PopulateStrategyListCapital(string data)
+        {
+            // populate strategy's Capital
+            string[] csvRows = System.IO.File.ReadAllLines(data).Skip(1).ToArray();
+            foreach (string row in csvRows)
+            {
+                var values = row.Split(",");
+                DateTime currentDate = DateTime.Parse(values[0]);
+                for (int x = 1; x < values.Length; x++)
+                {
+                    Capital newCap = new Capital(currentDate, decimal.Parse(values[x]));
+                    List[x - 1].Capitals.Add(newCap);
+                }
+            }
+        }
+        public void PopulateStrategyListPnls(string data)
+        {
+            // populate strategy's pnls
+            string[] csvRows = System.IO.File.ReadAllLines(data).Skip(1).ToArray();
+            foreach (string row in csvRows)
+            {
+                var values = row.Split(",");
                 DateTime currentDate = DateTime.Parse(values[0]);
                 for (int x = 1; x < values.Length; x++)
                 {
@@ -28,15 +67,6 @@ namespace CsvPnl
                 }
             }
         }
-        public IEnumerable<StrategyPnl> InitStrategyList(StreamReader streamReader)
-        {
-            string[] columnHeaders = streamReader.ReadLine().Split(",");
-            foreach (string column in columnHeaders.Skip(1))
-            {
-                yield return new StrategyPnl(column);
-            }
-        }
-
         public IEnumerable<string> PrintStrategyPnls(int strategyNumber)
         {
             if (strategyNumber > List.Count())

@@ -24,19 +24,20 @@ namespace PnlTests
             Assert.AreEqual(stratList.List[0].Strategy, "Strategy1");
         }
         [Test]
-        public void StrategyListCanPopulateUsingCsv()
+        public void StrategyListCanPopulatePnlsUsingCsv()
         {
             StrategyList stratList = new StrategyList();
 
-            stratList.PopulateStrategyList(stratList.CsvReader);
+            stratList.PopulateStrategyListPnls(stratList.pnlDataFile);
 
             Assert.IsNotNull(stratList.List[1].Pnls);
+            Assert.AreEqual(stratList.List[0].Pnls[0].Amount, 95045m);
         }
         [Test]
         public void StrategyListCanPrintPnlsForStrategy()
         {
             StrategyList stratList = new StrategyList();
-            stratList.PopulateStrategyList(stratList.CsvReader);
+            stratList.PopulateStrategyListPnls(stratList.pnlDataFile);
 
             string actualString = stratList.PrintStrategyPnls(1).ToList()[1];
             string expectedString = "Date: 04/01/2010 Value: -140135";
@@ -46,7 +47,7 @@ namespace PnlTests
         public void StrategyListDoesNotPrintOutOfBounds()
         {
             StrategyList stratList = new StrategyList();
-            stratList.PopulateStrategyList(stratList.CsvReader);
+            stratList.PopulateStrategyListPnls(stratList.pnlDataFile);
 
             try
             {
@@ -55,6 +56,26 @@ namespace PnlTests
             }
             catch {}
             
+        }
+        [Test]
+        public void StrategyListCanPopulateRegion()
+        {
+            StrategyList stratList = new StrategyList();
+
+            stratList.PopulateStrategyListPnls(stratList.pnlDataFile);
+            stratList.PopulateStrategyListRegions(stratList.regionDataFile);
+
+            Assert.AreEqual(stratList.List[0].Region, "AP");
+        }
+        [Test]
+        public void StrategyListCanPopulateCapitals()
+        {
+            StrategyList stratList = new StrategyList();
+
+            stratList.PopulateStrategyListPnls(stratList.pnlDataFile);
+            stratList.PopulateStrategyListCapital(stratList.capitalDataFile);
+
+            Assert.AreEqual(stratList.List[0].Capitals[0].Amount, 120500000m);
         }
     }
 }

@@ -18,7 +18,6 @@ namespace PhonebookTests.PhonebookBasicTests
         public void CanGetNumberByContact()
         {
             FunctionDictionary dictionary = new FunctionDictionary();
-
             dictionary.ContactDict.Add("test", 12345678910);
 
             Assert.AreEqual(dictionary.Execute("GET test"), "12345678910");
