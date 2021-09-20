@@ -88,5 +88,17 @@ namespace PnlTests
 
             Assert.AreEqual(actual[0], "Strategy1: Date: 01/01/2010 Capital: 120500000");
         }
+        [Test]
+        public void ServiceCanReturnCumulativePnlsByRegion()
+        {
+            StrategyList stratList = new StrategyList();
+
+            stratList.PopulateStrategyListPnls(stratList.PnlDataFile);
+            stratList.PopulateStrategyListRegions(stratList.RegionDataFile);
+            stratList.PopulateStrategyListCapital(stratList.CapitalDataFile);
+            string actual = StrategyService.PrintRegionCumulativePnl("AP", stratList).ToList()[3];
+
+            Assert.AreEqual(actual, "Date: 06/01/2010 00:00:00, cumulative Pnl: -280599");
+        }
     }
 }
