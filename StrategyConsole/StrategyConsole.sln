@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31321.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsvPnl", "..\LinkedList\Pnl\CsvPnl.csproj", "{479EDF92-BFBF-431D-9E7E-2B558576A661}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PnlTests", "..\LinkedList\PnlTests\PnlTests.csproj", "{A6F186C7-C7DB-4682-AF13-861B6E6CAFD4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{479EDF92-BFBF-431D-9E7E-2B558576A661}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{479EDF92-BFBF-431D-9E7E-2B558576A661}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{479EDF92-BFBF-431D-9E7E-2B558576A661}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{479EDF92-BFBF-431D-9E7E-2B558576A661}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6F186C7-C7DB-4682-AF13-861B6E6CAFD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6F186C7-C7DB-4682-AF13-861B6E6CAFD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6F186C7-C7DB-4682-AF13-861B6E6CAFD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6F186C7-C7DB-4682-AF13-861B6E6CAFD4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EAC661BA-F7F1-4D9F-BCDD-2F9EF8024797}
+	EndGlobalSection
+EndGlobal

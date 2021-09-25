@@ -1,15 +1,13 @@
 ## CURRENT TASK TO DO
-tests ISOLATED from pnl
-Assert.Throws<[Exception type]> (() => TestedMethod())
-STATES (variables stored in class) are a no go
-https://github.com/changetocoding/CSharpTraining/blob/main/LessonX-Working%20with%20files%20and%20exceptions.md
-https://github.com/changetocoding/CSharpTraining/blob/main/gsa/Part2.md
-Change to dictionary string limit thingy to store as hashcode instead
-data persists using io. dont have to deal with delete or update(?)
-
-EU, US, AP. Strategies trade in only one region
-
-
+Phonebook:
+use service in phonebook
+New (moq):
+WORKS LIKE THIS:
+https://i.gyazo.com/d46fd5be3a456538c52a6eb86a09b572.png
+Read through moq documentation:
+https://github.com/Moq/moq4/wiki/Quickstart
+EMAIL TASK:
+Do em when you get them.
 ## OLD
 you are passed a list of IDs and an object containing a string 'event' (the state) and the corresponding ID.
 write tests to figure out which state the ID is on and/or which events is has passed.

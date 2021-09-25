@@ -16,7 +16,6 @@ namespace CsvPnl
             stratList.PopulateStrategyListCapital(stratList.CapitalDataFile);
             Console.WriteLine("COMMANDS: capital, cumulative-pnl");
             Console.WriteLine("ENTER COMMAND:");
-            Console.WriteLine(stratList);
             string[] commandArray = Console.ReadLine().Split(" ");
             switch (commandArray[0])
             {

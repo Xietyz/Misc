@@ -14,10 +14,13 @@ namespace Phonebook
         const string ContactFileDir = "/Contacts.txt";
         string InputCommand;
         string InputValue;
-        public FunctionDictionary()
+        PhonebookService Service;
+        PhonebookFileReader FileService;
+        public FunctionDictionary(PhonebookService service, PhonebookFileReader reader)
         {
+            Service = service;
+            FileService = reader;
             InitDicts();
-            ReadContactFileToDictionary();
         }
         public void InitDicts()
         {
@@ -55,7 +58,7 @@ namespace Phonebook
             };
             ContactDict.Add(GetStableHashCode(newName), newNumber);
 
-            SaveContactsToFile(ContactDict);
+            FileService.SaveContactsToFile(ContactDict);
             return "Stored " + newName + " - " + newNumber;
         }
         public string DeleteContact()
@@ -68,7 +71,7 @@ namespace Phonebook
             }
             ContactDict.Remove(GetStableHashCode(nameToDelete));
 
-            SaveContactsToFile(ContactDict);
+            FileService.SaveContactsToFile(ContactDict);
             return "Deleted " + numberToDelete.ToString();
         }
         public string UpdateNumber()
@@ -90,7 +93,7 @@ namespace Phonebook
             ContactDict.TryGetValue(GetStableHashCode(whoseNumberToUpdate), out long oldNumber);
             ContactDict[GetStableHashCode(whoseNumberToUpdate)] = numberToUpdate;
 
-            SaveContactsToFile(ContactDict);
+            FileService.SaveContactsToFile(ContactDict);
             return "UPDATED FROM " + oldNumber;
         }
         public bool NumberSizeCheck(long numberToCheck)
@@ -128,29 +131,6 @@ namespace Phonebook
                 return "Invalid input";
             }
             return Functions[InputCommand]();
-        }
-        public void SaveContactsToFile(Dictionary<int, long> contactDict)
-        {
-            foreach (var contact in contactDict)
-            {
-                using (StreamWriter file = new StreamWriter(ContactFileDir))
-                {
-                    file.WriteLine(contact.Key + "," + contact.Value);
-                }
-            }
-        }
-        public void ReadContactFileToDictionary()
-        {
-            string[] allData;
-            if (System.IO.File.Exists(ContactFileDir))
-            {
-                allData = System.IO.File.ReadAllLines(ContactFileDir);
-                foreach (var contact in allData)
-                {
-                    string[] line = contact.Split(",");
-                    ContactDict.Add(int.Parse(line[0]), long.Parse(line[1]));
-                }
-            }
         }
         public int GetStableHashCode(string str)
         {

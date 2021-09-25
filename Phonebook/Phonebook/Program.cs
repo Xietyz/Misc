@@ -8,7 +8,7 @@ namespace Phonebook
     {
         static void Main(string[] args)
         {
-            FunctionDictionary functionDict = new FunctionDictionary();
+            FunctionDictionary functionDict = new FunctionDictionary(new PhonebookService(), new PhonebookFileReader());
             Console.WriteLine("--- PHONE BOOK ---");
             Console.WriteLine("COMMANDS: GET, STORE, DELETE, UPDATE");
             Console.WriteLine();
