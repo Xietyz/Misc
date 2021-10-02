@@ -14,9 +14,6 @@ namespace PhonebookTests.PhonebookBasicTests
             Assert.IsNotNull(dictionary.ContactDict);
             Assert.IsNotNull(dictionary.Functions);
         }
-        //}
-=========
->>>>>>>>> Temporary merge branch 2
         [Test]
         public void CanAddContact()
         {
