@@ -10,22 +10,14 @@ namespace PhonebookTests.PhonebookBasicTests
         [Test]
         public void DictionariesCanInitialise()
         {
-            FunctionDictionary dictionary = new FunctionDictionary();
+            FunctionDictionary dictionary = new FunctionDictionary(new PhonebookFileReader());
             Assert.IsNotNull(dictionary.ContactDict);
             Assert.IsNotNull(dictionary.Functions);
         }
         [Test]
-        public void CanGetNumberByContact()
-        {
-            FunctionDictionary dictionary = new FunctionDictionary();
-            dictionary.ContactDict.Add("test", 12345678910);
-
-            Assert.AreEqual(dictionary.Execute("GET test"), "12345678910");
-        }
-        [Test]
         public void CanAddContact()
         {
-            FunctionDictionary dictionary = new FunctionDictionary();
+            FunctionDictionary dictionary = new FunctionDictionary(new PhonebookFileReader());
 
             dictionary.Execute("STORE t1 10987654321");
 
@@ -34,7 +26,7 @@ namespace PhonebookTests.PhonebookBasicTests
         [Test]
         public void CanDeleteContact()
         {
-            FunctionDictionary dictionary = new FunctionDictionary();
+            FunctionDictionary dictionary = new FunctionDictionary(new PhonebookFileReader());
 
             dictionary.Execute("STORE t1 10987654321");
             dictionary.Execute("DELETE t1");
@@ -44,7 +36,7 @@ namespace PhonebookTests.PhonebookBasicTests
         [Test]
         public void CanUpdateContact()
         {
-            FunctionDictionary dictionary = new FunctionDictionary();
+            FunctionDictionary dictionary = new FunctionDictionary(new PhonebookFileReader());
 
             dictionary.Execute("STORE t1 10987654321");
             dictionary.Execute("UPDATE t1 1234");
@@ -54,7 +46,7 @@ namespace PhonebookTests.PhonebookBasicTests
         [Test]
         public void DoesNotAllowNamesOver4Characters()
         {
-            FunctionDictionary dictionary = new FunctionDictionary();
+            FunctionDictionary dictionary = new FunctionDictionary(new PhonebookFileReader());
 
             Assert.AreEqual(dictionary.Execute("STORE test1 123"), "Name too large");
             Assert.AreEqual(dictionary.Execute("GET test1"), "Name too large");
@@ -62,14 +54,14 @@ namespace PhonebookTests.PhonebookBasicTests
         [Test]
         public void DoesNotAllowNumbersOver11Digits()
         {
-            FunctionDictionary dictionary = new FunctionDictionary();
+            FunctionDictionary dictionary = new FunctionDictionary(new PhonebookFileReader());
 
             Assert.AreEqual(dictionary.Execute("STORE t1 1234567891011"), "Number too large");
         }
         [Test]
         public void DisplaysErrorOnInvalidCommand()
         {
-            FunctionDictionary dictionary = new FunctionDictionary();
+            FunctionDictionary dictionary = new FunctionDictionary(new PhonebookFileReader());
 
             Assert.AreEqual(dictionary.Execute("STORES t1 abc1"), "Invalid input");
             Assert.AreEqual(dictionary.Execute("WDAFWGfa 22"), "Invalid input");
@@ -77,7 +69,7 @@ namespace PhonebookTests.PhonebookBasicTests
         [Test]
         public void DisplaysErrorOnNumberWithCharacters()
         {
-            FunctionDictionary dictionary = new FunctionDictionary();
+            FunctionDictionary dictionary = new FunctionDictionary(new PhonebookFileReader());
 
             dictionary.Execute("STORE t2 123");
 
@@ -87,7 +79,7 @@ namespace PhonebookTests.PhonebookBasicTests
         [Test]
         public void DisplaysErrorWhenContactNotFound()
         {
-            FunctionDictionary dictionary = new FunctionDictionary();
+            FunctionDictionary dictionary = new FunctionDictionary(new PhonebookFileReader());
 
             Assert.AreEqual(dictionary.Execute("DELETE t1"), "Does not exist");
             Assert.AreEqual(dictionary.Execute("UPDATE t2 123"), "Does not exist");

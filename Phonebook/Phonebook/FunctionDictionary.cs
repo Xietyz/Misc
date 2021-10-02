@@ -8,18 +8,17 @@ namespace Phonebook
 {
     public class FunctionDictionary
     {
-        const int StringSizeLimit = 4;
         public Dictionary<string, Func<string>> Functions;
         public Dictionary<int, long> ContactDict;
-        const string ContactFileDir = "/Contacts.txt";
         string InputCommand;
         string InputValue;
         PhonebookService Service;
         PhonebookFileReader FileService;
-        public FunctionDictionary(PhonebookService service, PhonebookFileReader reader)
+
+        public FunctionDictionary(PhonebookFileReader reader)
         {
-            Service = service;
             FileService = reader;
+            Service = new PhonebookService(FileService);
             InitDicts();
         }
         public void InitDicts()
@@ -32,86 +31,25 @@ namespace Phonebook
             Functions.Add("DELETE", DeleteContact);
             Functions.Add("UPDATE", UpdateNumber);
         }
+
+        private string UpdateNumber()
+        {
+            return Service.UpdateNumber(ContactDict, InputValue);
+        }
+
+        private string DeleteContact()
+        {
+            return Service.DeleteContact(ContactDict, InputValue);
+        }
+
+        private string StoreContact()
+        {
+            return Service.StoreContact(ContactDict, InputValue);
+        }
+
         public string GetNumber()
         {
-            try
-            {
-                return ContactDict[GetStableHashCode(InputValue)].ToString();
-            }
-            catch
-            {
-                Console.WriteLine("No contact " + InputValue);
-                return null;
-            }
-        }
-        public string StoreContact()
-        {
-            if (NumberOnlyHasDigitsCheck(InputValue.Split(" ")[1]))
-            {
-                return "Number should only be digits";
-            }
-            long newNumber = long.Parse(InputValue.Split(" ")[1]);
-            string newName = InputValue.Split(" ")[0];
-            if (NumberSizeCheck(newNumber))
-            {
-                return "Number too large";
-            };
-            ContactDict.Add(GetStableHashCode(newName), newNumber);
-
-            FileService.SaveContactsToFile(ContactDict);
-            return "Stored " + newName + " - " + newNumber;
-        }
-        public string DeleteContact()
-        {
-            string nameToDelete = InputValue;
-            ContactDict.TryGetValue(GetStableHashCode(nameToDelete), out long numberToDelete);
-            if (!ContactDict.ContainsKey(GetStableHashCode(nameToDelete)))
-            {
-                return "Does not exist";
-            }
-            ContactDict.Remove(GetStableHashCode(nameToDelete));
-
-            FileService.SaveContactsToFile(ContactDict);
-            return "Deleted " + numberToDelete.ToString();
-        }
-        public string UpdateNumber()
-        {
-            if (NumberOnlyHasDigitsCheck(InputValue.Split(" ")[1]))
-            {
-                return "Number should only be digits";
-            }
-            long numberToUpdate = long.Parse(InputValue.Split(" ")[1]);
-            string whoseNumberToUpdate = InputValue.Split(" ")[0];
-            if (NumberSizeCheck(numberToUpdate))
-            {
-                return "Number too large";
-            };
-            if (!ContactDict.ContainsKey(GetStableHashCode(whoseNumberToUpdate)))
-            {
-                return "Does not exist";
-            }
-            ContactDict.TryGetValue(GetStableHashCode(whoseNumberToUpdate), out long oldNumber);
-            ContactDict[GetStableHashCode(whoseNumberToUpdate)] = numberToUpdate;
-
-            FileService.SaveContactsToFile(ContactDict);
-            return "UPDATED FROM " + oldNumber;
-        }
-        public bool NumberSizeCheck(long numberToCheck)
-        {
-            if (numberToCheck.ToString().Length > 11)
-            {
-                return true;
-                //throw new ArgumentException("Number too large");
-            }
-            return false;
-        }
-        public bool NumberOnlyHasDigitsCheck(string numberToCheck)
-        {
-            if (!numberToCheck.All(char.IsDigit))
-            {
-                return true;
-            }
-            return false;
+            return Service.GetNumber(ContactDict, InputValue);
         }
         public string Execute(string input)
         {
@@ -132,22 +70,6 @@ namespace Phonebook
             }
             return Functions[InputCommand]();
         }
-        public int GetStableHashCode(string str)
-        {
-            {
-                int hash1 = 5381;
-                int hash2 = hash1;
 
-                for (int i = 0; i < str.Length && str[i] != '\0'; i += 2)
-                {
-                    hash1 = ((hash1 << 5) + hash1) ^ str[i];
-                    if (i == str.Length - 1 || str[i + 1] == '\0')
-                        break;
-                    hash2 = ((hash2 << 5) + hash2) ^ str[i + 1];
-                }
-
-                return hash1 + (hash2 * 1566083941);
-            }
-        }
     }
 }
