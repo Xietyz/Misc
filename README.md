@@ -6,7 +6,9 @@ Pnl changes done:
 - Anything csv related is in StrategyReader
 - No constructor for StrategyList
 
+
 Right now it is: Program -> StrategyList -> StrategyReader
+
 Should be able to test by functionality by using methods in StrategyReader (pass it dummy data defined in tests).
 
 ## OLD
