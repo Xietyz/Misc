@@ -10,10 +10,10 @@ namespace CsvPnl
         static void Main(string[] args)
         {
             StrategyList stratList = new StrategyList();
+            StrategyReader _reader = stratList._reader;
 
-            stratList.PopulateStrategyListPnls(stratList.PnlDataFile);
-            stratList.PopulateStrategyListRegions(stratList.RegionDataFile);
-            stratList.PopulateStrategyListCapital(stratList.CapitalDataFile);
+            stratList.InitialiseStrategyList();
+            //stratList.PopulateStrategyListCapital(stratList.CapitalDataFile);
             Console.WriteLine("COMMANDS: capital, cumulative-pnl");
             Console.WriteLine("ENTER COMMAND:");
             string[] commandArray = Console.ReadLine().Split(" ");
@@ -22,14 +22,14 @@ namespace CsvPnl
                 case "capital":
                     {
                         string[] outputArray;
-                        outputArray = StrategyService.PrintStrategyCapitals(commandArray[1], stratList).ToArray();
+                        outputArray = stratList.PrintStrategyCapitals(commandArray[1], stratList).ToArray();
                         Console.WriteLine(String.Join("\n", outputArray));
                     }
                     break;
                 case "cumulative-pnl":
                     {
                         string[] outputArray;
-                        outputArray = StrategyService.PrintRegionCumulativePnl(commandArray[1], stratList).ToArray();
+                        outputArray = stratList.PrintRegionCumulativePnl(commandArray[1], stratList).ToArray();
                         Console.WriteLine(String.Join("\n", outputArray));
                     }
                     break;

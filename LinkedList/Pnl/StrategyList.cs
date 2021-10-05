@@ -7,63 +7,65 @@ namespace CsvPnl
 {
     public class StrategyList : List<StrategyPnl>
     {
-        // dont store list, pass on as parameter (?) keep for now
-        public string CapitalDataFile = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "/Data/capital.csv";
-        public string PnlDataFile = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "/Data/pnl.csv";
-        public string RegionDataFile = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "/Data/properties.csv";
+        public StrategyReader _reader = new StrategyReader();
+        public List<StrategyPnl> _list;
 
-        public List<StrategyPnl> List;
-        public StrategyList()
+        public void InitialiseStrategyList()
         {
-            List = InitStrategyList(PnlDataFile).ToList();
+            _list = _reader.InitStrategyList(_reader.ReadCsv(_reader.CapitalDataFile)).ToList();
+            _list = _reader.ReadRegions(_reader.ReadCsv(_reader.RegionDataFile), _list);
+            _list = _reader.ReadCapital(_reader.ReadCsv(_reader.CapitalDataFile), _list);
+            _list = _reader.ReadPnls(_reader.ReadCsv(_reader.PnlDataFile), _list);
         }
-        public IEnumerable<StrategyPnl> InitStrategyList(string data)
+
+        public IEnumerable<string> PrintRegionCumulativePnl(string region, StrategyList list)
         {
-            //string[] columnHeaders = streamReader.ReadLine().Split(",");
-            string[] columnHeaders = System.IO.File.ReadAllLines(data)[0].Split(",");
-            foreach (string column in columnHeaders.Skip(1))
+            var stratsByRegion = list._list.Where(x => x.Region.Equals(region)).ToList();
+            int amountOfPnls = stratsByRegion.First().Pnls.Count();
+            string toReturn = "";
+            for (int x = 0; x < amountOfPnls; x++)
             {
-                yield return new StrategyPnl(column);
-            }
-        }
-        public void PopulateStrategyListRegions(string data)
-        {
-            // populate strat's regions
-            // populate strategy's pnls
-            string[] csvRows = System.IO.File.ReadAllLines(data).Skip(1).ToArray();
-            for (int rowNumber = 0; rowNumber < csvRows.Length; rowNumber++)
-            {
-                var values = csvRows[rowNumber].Split(",");
-                List[rowNumber].Region = values[1];
-            }
-        }
-        public void PopulateStrategyListCapital(string data)
-        {
-            // populate strategy's Capital
-            string[] csvRows = System.IO.File.ReadAllLines(data).Skip(1).ToArray();
-            foreach (string row in csvRows)
-            {
-                var values = row.Split(",");
-                DateTime currentDate = DateTime.Parse(values[0]);
-                for (int x = 1; x < values.Length; x++)
+                // every date (pnl)
+                decimal totalPnlOnDate = 0;
+                foreach (StrategyPnl strat in stratsByRegion)
                 {
-                    Capital newCap = new Capital(currentDate, decimal.Parse(values[x]));
-                    List[x - 1].Capitals.Add(newCap);
+                    // every strategy
+                    totalPnlOnDate += strat.Pnls[x].Amount;
                 }
+                toReturn = "Date: " + stratsByRegion.First().Pnls[x].Date + ", cumulative Pnl: " + totalPnlOnDate;
+                yield return toReturn;
             }
         }
-        public void PopulateStrategyListPnls(string data)
+        public IEnumerable<string> PrintStrategyPnls(int strategyNumber, List<StrategyPnl> list)
         {
-            // populate strategy's pnls
-            string[] csvRows = System.IO.File.ReadAllLines(data).Skip(1).ToArray();
-            foreach (string row in csvRows)
+            if (strategyNumber > list.Count)
             {
-                var values = row.Split(",");
-                DateTime currentDate = DateTime.Parse(values[0]);
-                for (int x = 1; x < values.Length; x++)
+                throw new Exception("Out of bounds");
+            }
+            foreach (Pnl pnl in list[strategyNumber - 1].Pnls)
+            {
+                Console.WriteLine(pnl.ToString());
+                yield return pnl.ToString();
+            }
+        }
+        public IEnumerable<string> PrintStrategyCapitals(string strategies, StrategyList list)
+        {
+            string[] stratNameArray = strategies.Split(",");
+            foreach (string stratName in stratNameArray)
+            {
+                // input
+                foreach (StrategyPnl strategy in list._list)
                 {
-                    Pnl newPnl = new Pnl(currentDate, decimal.Parse(values[x]));
-                    List[x - 1].Pnls.Add(newPnl);
+                    // strats
+
+                    if (stratName.Equals(strategy.Strategy))
+                    {
+                        foreach (Capital cap in strategy.Capitals)
+                        {
+                            // get capitals
+                            yield return strategy.Strategy + ": " + cap.ToString();
+                        }
+                    }
                 }
             }
         }
