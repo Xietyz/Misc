@@ -8,12 +8,10 @@ namespace Moneybox.App.Features
     {
         private IAccountRepository accountRepository;
         private INotificationService notificationService;
-        private MoneyService moneyService;
-        public TransferMoney(IAccountRepository accountRepository, INotificationService notificationService, MoneyService moneyService)
+        public TransferMoney(IAccountRepository accountRepository, INotificationService notificationService)
         {
             this.accountRepository = accountRepository;
             this.notificationService = notificationService;
-            this.moneyService = moneyService;
         }
 
         public void Execute(Guid fromAccountId, Guid toAccountId, decimal amount)
@@ -21,17 +19,20 @@ namespace Moneybox.App.Features
             var from = this.accountRepository.GetAccountById(fromAccountId);
             var to = this.accountRepository.GetAccountById(toAccountId);
 
-            moneyService.CheckDeductionEligibility(amount, from);
-            moneyService.CheckPayInEligiblity(amount, to);
+            if (from.CheckDeductionEligibility(amount, from, notificationService))
+            {
+                if (to.CheckPayInEligiblity(amount, to, notificationService))
+                {
+                    from.Balance = from.Balance - amount;
+                    from.Withdrawn = from.Withdrawn - amount;
 
-            from.Balance = from.Balance - amount;
-            from.Withdrawn = from.Withdrawn - amount;
+                    to.Balance = to.Balance + amount;
+                    to.PaidIn = to.PaidIn + amount;
 
-            to.Balance = to.Balance + amount;
-            to.PaidIn = to.PaidIn + amount;
-
-            this.accountRepository.Update(from);
-            this.accountRepository.Update(to);
+                    this.accountRepository.Update(from);
+                    this.accountRepository.Update(to);
+                }
+            }
         }
     }
 }

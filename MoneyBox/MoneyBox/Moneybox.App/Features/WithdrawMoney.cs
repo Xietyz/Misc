@@ -8,26 +8,24 @@ namespace Moneybox.App.Features
     {
         private IAccountRepository accountRepository;
         private INotificationService notificationService;
-        private MoneyService moneyService;
 
-        public WithdrawMoney(IAccountRepository accountRepository, INotificationService notificationService, MoneyService moneyService)
+        public WithdrawMoney(IAccountRepository accountRepository, INotificationService notificationService)
         {
             this.accountRepository = accountRepository;
             this.notificationService = notificationService;
-            this.moneyService = moneyService;
         }
 
         public void Execute(Guid fromAccountId, decimal amount)
         {
             // TODO:
             var from = this.accountRepository.GetAccountById(fromAccountId);
+            if (from.CheckDeductionEligibility(amount, from, notificationService))
+            {
+                from.Balance = from.Balance - amount;
+                from.Withdrawn = from.Withdrawn - amount;
 
-            moneyService.CheckDeductionEligibility(amount, from);
-
-            from.Balance = from.Balance - amount;
-            from.Withdrawn = from.Withdrawn - amount;
-
-            this.accountRepository.Update(from);
+                this.accountRepository.Update(from);
+            }
         }
     }
 }
