@@ -22,7 +22,6 @@ namespace Moneybox.App
             if (paidIn > Account.PayInLimit)
             {
                 throw new InvalidOperationException("Account pay in limit reached");
-                return false;
             }
 
             if (Account.PayInLimit - paidIn < 500m)
@@ -37,7 +36,6 @@ namespace Moneybox.App
             if (fromBalance < 0m)
             {
                 throw new InvalidOperationException("Insufficient funds to make transfer");
-                return false;
             }
 
             if (fromBalance < 500m)
