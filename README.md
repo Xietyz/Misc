@@ -1,13 +1,10 @@
 ## CURRENT TASK TO DO
-Quiz
-Moneybox continue
-Pnl changes done:
-- Removed static service - now a part of StrategyList
-- Anything csv related is in StrategyReader
-- No constructor for StrategyList
+CSV:
+store data in database, use data from db
+QUIZ:
+structs vs classes
+refresh out vs ref
 
-
-Right now it is: Program -> StrategyList -> StrategyReader
 
 Should be able to test by functionality by using methods in StrategyReader (pass it dummy data defined in tests).
 
