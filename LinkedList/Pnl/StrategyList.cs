@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CsvPnl.Database;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,7 +8,7 @@ namespace CsvPnl
 {
     public class StrategyList : List<StrategyPnl>
     {
-        public StrategyReader _reader = new StrategyReader();
+        public StrategyReader _reader = new StrategyReader(new PnlDbService(new PnldbContext()));
         public List<StrategyPnl> _list;
 
         public void InitialiseStrategyList()
@@ -32,7 +33,7 @@ namespace CsvPnl
                     // every strategy
                     totalPnlOnDate += strat.Pnls[x].Amount;
                 }
-                toReturn = "Date: " + stratsByRegion.First().Pnls[x].Date + ", cumulative Pnl: " + totalPnlOnDate;
+                toReturn = "Date: " + stratsByRegion.First().Pnls[x].PnlDate + ", cumulative Pnl: " + totalPnlOnDate;
                 yield return toReturn;
             }
         }

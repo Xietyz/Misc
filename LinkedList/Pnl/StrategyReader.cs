@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CsvPnl.Database;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,15 +9,24 @@ namespace CsvPnl
 {
     public class StrategyReader
     {
+        PnlDbService _service;
         public string CapitalDataFile = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "/Data/capital.csv";
         public string PnlDataFile = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "/Data/pnl.csv";
         public string RegionDataFile = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "/Data/properties.csv";
+        public StrategyReader(PnlDbService service)
+        {
+            _service = service;
+        }
         public IEnumerable<StrategyPnl> InitStrategyList(List<string[]> data)
         {
+            int counter = 0;
             // gets strategies
             // string[] columnHeaders = data.First().Split(",");
             foreach (string column in data.First().Skip(1))
             {
+                StrategyPnl newStrat = new StrategyPnl(column);
+                newStrat.Id = counter;
+                counter++;
                 yield return new StrategyPnl(column);
             }
         }
@@ -39,8 +49,10 @@ namespace CsvPnl
                 DateTime currentDate = DateTime.Parse(row[0]);
                 for (int x = 1; x < row.Length; x++)
                 {
-                    Capital newCap = new Capital(currentDate, decimal.Parse(row[x]), list[x - 1]);
-                    list[x - 1].Capitals.Add(newCap);
+                    var strat = list[x - 1];
+                    var convertedStrat = _service.StrategyPnlToEntity(strat);
+                    Capital newCap = new Capital(currentDate, decimal.Parse(row[x]), convertedStrat);
+                    strat.Capitals.Add(newCap);
                 }
             }
             return list;
@@ -63,11 +75,29 @@ namespace CsvPnl
                 DateTime currentDate = DateTime.Parse(row[0]);
                 for (int x = 1; x < row.Length; x++)
                 {
-                    Pnl newPnl = new Pnl(currentDate, decimal.Parse(row[x]));
-                    list[x - 1].Pnls.Add(newPnl);
+                    var strat = list[x - 1];
+                    var convertedStrat = _service.StrategyPnlToEntity(strat);
+                    Pnl newPnl = new Pnl(currentDate, decimal.Parse(row[x]), convertedStrat);
+                    strat.Pnls.Add(newPnl);
                 }
             }
             return list;
+        }
+        // dumb
+        public List<Pnl> ReadAllPnls()
+        {
+            // return data of csv
+            string[] csvRows = System.IO.File.ReadAllLines(PnlDataFile).ToArray();
+            var pnls = new List<Pnl>();
+            foreach (var row in csvRows.Skip(1))
+            {
+                var split = row.Split(",");
+                DateTime date = DateTime.ParseExact(split[0], "yyyy-MM-dd", null);
+                Decimal amount = Decimal.Parse(split[1]);
+                
+                //pnls.Add(newPnl);
+            }
+            return pnls;
         }
     }
 }

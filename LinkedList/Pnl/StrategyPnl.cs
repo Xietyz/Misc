@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CsvPnl.Database;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,6 +14,7 @@ namespace CsvPnl
             Pnls = new List<Pnl>();
             Capitals = new List<Capital>();
         }
+        public int Id { get; set; }
         public string Strategy { get; set; }
         public List<Pnl> Pnls { get; set; }
         public List<Capital> Capitals { get; set; }
