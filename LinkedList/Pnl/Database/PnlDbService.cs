@@ -17,33 +17,34 @@ namespace CsvPnl.Database
             Strategy converted = new Strategy();
             converted.Region = strat.Region;
             converted.StrategyName = strat.Strategy;
+            converted.Id = strat.Id;
             return converted;
         }
         public void StoreToDb(List<Pnl> pnls, List<Strategy> strats, List<Capital> capitals)
         {
+            // change dbcontext to truncate table if it exists first
             int counter = 0;
-            //using (var dbcontext = new PnldbContext())
-            //{
-            //    //strats[0].Id = 10;
-            //    //dbcontext.Strategies.Add(strats[0]);
-
-            //    foreach (var strat in strats)
-            //    {
-            //        strat.Id = counter;
-            //        dbcontext.Strategies.Add(strat);
-            //        counter++;
-            //    };
-            //    dbcontext.SaveChanges();
-            //}
+            using (var dbcontext = new PnldbContext())
+            {
+               foreach (var strat in strats)
+               {
+                   dbcontext.Strategies.Add(strat);
+                   counter++;
+               };
+               dbcontext.SaveChanges();
+            }
             using (var dbcontext = new PnldbContext())
             {
                 counter = 0;
                 foreach (var pnl in pnls)
                 {
                     pnl.Id = counter;
+                    pnl.StrategyId = pnl.Strategy.Id;
+                    pnl.Strategy = null;
                     dbcontext.Pnls.Add(pnl);
                     counter++;
                 };
+                dbcontext.SaveChanges();
             }
 
             using (var dbcontext = new PnldbContext())
@@ -52,12 +53,13 @@ namespace CsvPnl.Database
                 foreach (var cap in capitals)
                 {
                     cap.Id = counter;
+                    cap.StrategyId = cap.Strategy.Id;
+                    cap.Strategy = null;
                     dbcontext.Capitals.Add(cap);
                     counter++;
                 };
+                dbcontext.SaveChanges();
             }
-
-            _dbcontext.SaveChanges();
         }
     }
 }

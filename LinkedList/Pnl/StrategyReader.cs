@@ -27,7 +27,7 @@ namespace CsvPnl
                 StrategyPnl newStrat = new StrategyPnl(column);
                 newStrat.Id = counter;
                 counter++;
-                yield return new StrategyPnl(column);
+                yield return newStrat;
             }
         }
         public List<string[]> ReadCsv(string file)

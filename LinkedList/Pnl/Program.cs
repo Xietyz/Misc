@@ -59,7 +59,7 @@ namespace CsvPnl
                             strats.Add(dbService.StrategyPnlToEntity(strat));
                         }
                         dbService.StoreToDb(pnls, strats, caps);
-                        Console.WriteLine("saved?");
+                        Console.WriteLine("saved");
                     }
                     break;
             }
