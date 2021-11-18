@@ -1,4 +1,5 @@
 ﻿using CsvPnl.Database;
+using CsvPnl.Factory;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -51,7 +52,7 @@ namespace CsvPnl
                 {
                     var strat = list[x - 1];
                     var convertedStrat = _service.StrategyPnlToEntity(strat);
-                    Capital newCap = new Capital(currentDate, decimal.Parse(row[x]), convertedStrat);
+                    Capital newCap = (Capital) DataFactory.Create("capital", currentDate, decimal.Parse(row[x]), convertedStrat);
                     strat.Capitals.Add(newCap);
                 }
             }
@@ -77,7 +78,7 @@ namespace CsvPnl
                 {
                     var strat = list[x - 1];
                     var convertedStrat = _service.StrategyPnlToEntity(strat);
-                    Pnl newPnl = new Pnl(currentDate, decimal.Parse(row[x]), convertedStrat);
+                    Pnl newPnl = (Pnl) DataFactory.Create("pnl", currentDate, decimal.Parse(row[x]), convertedStrat);
                     strat.Pnls.Add(newPnl);
                 }
             }

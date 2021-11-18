@@ -1,16 +1,16 @@
-﻿using System;
+﻿using CsvPnl.Factory;
+using System;
 using System.Collections.Generic;
 
 #nullable disable
 
 namespace CsvPnl.Database
 {
-    public partial class Pnl
+    // id
+    // amount
+    // strat id
+    public partial class Pnl : IMyData
     {
-        public Pnl()
-        {
-
-        }
         public Pnl(DateTime date, decimal amount, Strategy strat)
         {
             Amount = amount;

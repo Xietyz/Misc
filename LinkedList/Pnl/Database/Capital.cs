@@ -1,16 +1,13 @@
-﻿using System;
+﻿using CsvPnl.Factory;
+using System;
 using System.Collections.Generic;
 
 #nullable disable
 
 namespace CsvPnl.Database
 {
-    public partial class Capital
+    public partial class Capital : IMyData
     {
-        public Capital()
-        {
-
-        }
         public Capital(DateTime date, decimal amount, Strategy strat)
         {
             Amount = amount;
@@ -19,10 +16,9 @@ namespace CsvPnl.Database
             StrategyId = strat.Id;
         }
         public int Id { get; set; }
-        public decimal? Amount { get; set; }
+        public decimal Amount { get; set; }
         public DateTime? CapitalDate { get; set; }
         public int? StrategyId { get; set; }
-
         public virtual Strategy Strategy { get; set; }
     }
 }

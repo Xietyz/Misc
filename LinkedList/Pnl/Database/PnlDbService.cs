@@ -26,12 +26,12 @@ namespace CsvPnl.Database
             int counter = 0;
             using (var dbcontext = new PnldbContext())
             {
-               foreach (var strat in strats)
-               {
-                   dbcontext.Strategies.Add(strat);
-                   counter++;
-               };
-               dbcontext.SaveChanges();
+                foreach (var strat in strats)
+                {
+                    dbcontext.Strategies.Add(strat);
+                    counter++;
+                };
+                dbcontext.SaveChanges();
             }
             using (var dbcontext = new PnldbContext())
             {
