@@ -7,7 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsvPnl", "..\LinkedList\Pnl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PnlTests", "..\LinkedList\PnlTests\PnlTests.csproj", "{A6F186C7-C7DB-4682-AF13-861B6E6CAFD4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csproj", "{6671417D-48DD-47C6-A61F-4D18D79CD319}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csproj", "{6671417D-48DD-47C6-A61F-4D18D79CD319}"
+	ProjectSection(ProjectDependencies) = postProject
+		{479EDF92-BFBF-431D-9E7E-2B558576A661} = {479EDF92-BFBF-431D-9E7E-2B558576A661}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
