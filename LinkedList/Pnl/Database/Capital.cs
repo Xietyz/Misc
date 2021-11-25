@@ -8,6 +8,7 @@ namespace CsvPnl.Database
 {
     public partial class Capital : IMyData
     {
+        public Capital(){}
         public Capital(DateTime date, decimal amount, Strategy strat)
         {
             Amount = amount;

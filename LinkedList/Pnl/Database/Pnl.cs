@@ -6,11 +6,9 @@ using System.Collections.Generic;
 
 namespace CsvPnl.Database
 {
-    // id
-    // amount
-    // strat id
     public partial class Pnl : IMyData
     {
+        public Pnl(){}
         public Pnl(DateTime date, decimal amount, Strategy strat)
         {
             Amount = amount;
@@ -20,7 +18,7 @@ namespace CsvPnl.Database
         }
         public int Id { get; set; }
         public decimal Amount { get; set; }
-        public DateTime? PnlDate { get; set; }
+        public DateTime PnlDate { get; set; }
         public int? StrategyId { get; set; }
 
         public virtual Strategy Strategy { get; set; }
