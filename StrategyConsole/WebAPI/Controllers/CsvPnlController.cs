@@ -12,7 +12,6 @@ namespace WebAPI.Controllers
     [Route("api")]
     public class CsvPnlController : ControllerBase
     {
-        // https://stackoverflow.com/questions/62411410/is-there-any-better-way-to-add-the-dbcontext-to-a-asp-core-mvc-controller
         private readonly ILogger<CsvPnlController> _logger;
         private readonly PnldbContext _dbContext;
 
@@ -24,40 +23,39 @@ namespace WebAPI.Controllers
 
         [HttpGet]
         [Route("cumulative-pnl/{region}/{date}")]
-        public List<PnlReturn> Get(string region, string date)
+        public List<PnlReturn> GetCumulativePnl(string region, string date)
         {
             var specifiedDate = DateTime.ParseExact(date, "yyyy-MM-dd", null);
-            var strats = _dbContext.Strategies.Where(x => x.Region.Equals(region));
-            var pnlEntries = _dbContext.Pnls.Where(x => x.StrategyId == 0).Where(x => x.PnlDate >= specifiedDate);
             var pnlReturnList = new List<PnlReturn>();
 
-            foreach (var entry in pnlEntries)
+            var groupedFilteredPnls = _dbContext.Pnls
+                .Where(x => x.Strategy.Region.Equals(region))
+                .Where(x => x.PnlDate >= specifiedDate)
+                .AsEnumerable()
+                .GroupBy(x => x.PnlDate);
+
+            decimal cumulativePnl = 0;
+            foreach (var group in groupedFilteredPnls)
             {
-                var newPnl = new PnlReturn(region, entry.PnlDate);
-                pnlReturnList.Add(newPnl);
-            }
-            foreach (var strategy in strats)
-            {
-                var pnls = _dbContext.Pnls.Where(x => x.StrategyId == strategy.Id).Where(x => x.PnlDate >= specifiedDate);
-                foreach (var pnl in pnls)
+                var toReturn = new PnlReturn(group.Key);
+                foreach (var pnl in group)
                 {
-                    var current = pnlReturnList.Where(x => x._date == pnl.PnlDate);
-                    current.First().cumulativePnl += pnl.Amount;
+                    cumulativePnl += pnl.Amount;
                 }
+                toReturn.DateAmount = cumulativePnl;
+                pnlReturnList.Add(toReturn);
             }
             return pnlReturnList.ToList();
         }
     }
     public class PnlReturn
     {
-        public PnlReturn(string region, DateTime date)
+        public PnlReturn(DateTime date)
         {
-            _region = region;
-            _date = date;
-            cumulativePnl = 0;
+            Date = date;
+            DateAmount = 0;
         }
-        public string _region { get; set; }
-        public DateTime _date { get; set; }
-        public decimal cumulativePnl { get; set; }
+        public DateTime Date { get; set; }
+        public decimal DateAmount { get; set; }
     }
 }
