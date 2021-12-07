@@ -18,7 +18,7 @@ namespace CsvPnl.Database
         }
         public int Id { get; set; }
         public decimal Amount { get; set; }
-        public DateTime? CapitalDate { get; set; }
+        public DateTime CapitalDate { get; set; }
         public int? StrategyId { get; set; }
         public virtual Strategy Strategy { get; set; }
     }

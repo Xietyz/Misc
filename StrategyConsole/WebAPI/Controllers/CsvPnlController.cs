@@ -47,6 +47,37 @@ namespace WebAPI.Controllers
             }
             return pnlReturnList.ToList();
         }
+        [HttpGet]
+        [Route("compound-daily-returns/{strategy}")]
+        public List<DailyCompoundReturn> GetCompoundDailyReturns(string strategy)
+        {
+            var listToReturn = new List<DailyCompoundReturn>();
+            int strategyToFind;
+            if (int.TryParse(strategy.Last().ToString(), out strategyToFind))
+            {
+                var pnls = _dbContext.Pnls.Where(x => x.StrategyId.Equals(strategyToFind)).GroupBy(x => new { x.PnlDate.Year, x.PnlDate.Month });
+                var groupedCaps = _dbContext.Capitals.Where(x => x.StrategyId.Equals(strategyToFind)).GroupBy(x => new { x.CapitalDate.Year, x.CapitalDate.Month });
+
+                foreach (var pnlGroup in pnls)
+                {
+                    decimal cumulativePnl = 0;
+                    decimal capital = groupedCaps.Where(x => x.Key.Month == pnlGroup.Key.Month)
+                                        .First(x => x.Key.Year == pnlGroup.Key.Year)
+                                        .First()
+                                        .Amount;
+                    foreach (var pnl in pnlGroup)
+                    {
+                        cumulativePnl += pnl.Amount;
+                        var compound = cumulativePnl / capital;
+                        var compoundToReturn = new DailyCompoundReturn(pnl.StrategyId.ToString(), pnl.PnlDate, compound);
+                        listToReturn.Add(compoundToReturn);
+                    }
+                    cumulativePnl = 0;
+                }
+            }
+            return listToReturn;
+        }
+
     }
     public class PnlReturn
     {
@@ -57,5 +88,17 @@ namespace WebAPI.Controllers
         }
         public DateTime Date { get; set; }
         public decimal DateAmount { get; set; }
+    }
+    public class DailyCompoundReturn
+    {
+        public DailyCompoundReturn(string strategy, DateTime date, decimal compoundReturn)
+        {
+            Strategy = "Strategy " + strategy;
+            Date = date;
+            CompoundReturn = compoundReturn;
+        }
+        public string Strategy { get; set; }
+        public DateTime Date { get; set; }
+        public decimal CompoundReturn { get; set; }
     }
 }
