@@ -55,8 +55,8 @@ namespace WebAPI.Controllers
             int strategyToFind;
             if (int.TryParse(strategy.Last().ToString(), out strategyToFind))
             {
-                var pnls = _dbContext.Pnls.Where(x => x.StrategyId.Equals(strategyToFind)).GroupBy(x => new { x.PnlDate.Year, x.PnlDate.Month });
-                var groupedCaps = _dbContext.Capitals.Where(x => x.StrategyId.Equals(strategyToFind)).GroupBy(x => new { x.CapitalDate.Year, x.CapitalDate.Month });
+                var pnls = _dbContext.Pnls.Where(x => x.StrategyId.Equals(strategyToFind)).AsEnumerable().GroupBy(x => new { x.PnlDate.Year, x.PnlDate.Month });
+                var groupedCaps = _dbContext.Capitals.Where(x => x.StrategyId.Equals(strategyToFind)).AsEnumerable().GroupBy(x => new { x.CapitalDate.Year, x.CapitalDate.Month });
 
                 foreach (var pnlGroup in pnls)
                 {
