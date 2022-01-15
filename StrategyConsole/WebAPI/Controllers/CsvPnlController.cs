@@ -22,6 +22,35 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("monthly-capital/{strategies}")]
+        public List<MonthlyReturn> GetMonthlyCapital(string strategies)
+        {
+            var monthlyReturnList = new List<MonthlyReturn>();
+            var capitals = _dbContext.Capitals;
+            string[] strats = strategies.Split(',');
+
+            //var capitals = _dbContext.Capitals
+            //    .Where(x => x.Strategy.StrategyName.Equals(strat))
+
+            foreach (var strat in strats)
+            {
+                char[] split = strat.ToCharArray();
+                int stratNum = (int)Char.GetNumericValue(split[8]) - 1;
+
+                foreach (var capital in capitals)
+                {
+                    int? stratId = capital.StrategyId;
+                    if (stratNum == stratId)
+                    {
+                        var toReturn = new MonthlyReturn(strat, capital.CapitalDate, capital.Amount);
+                        monthlyReturnList.Add(toReturn);
+                    }
+                }
+            }
+            return monthlyReturnList.ToList();
+        }
+
+        [HttpGet]
         [Route("cumulative-pnl/{region}/{date}")]
         public List<PnlReturn> GetCumulativePnl(string region, string date)
         {
