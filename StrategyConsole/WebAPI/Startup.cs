@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAPI.Services;
 
 namespace WebAPI
 {
@@ -31,6 +32,7 @@ namespace WebAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
             services.AddDbContext<PnldbContext>();
+            services.AddScoped<CsvPnlService>();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

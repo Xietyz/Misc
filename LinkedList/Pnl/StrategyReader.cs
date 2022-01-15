@@ -21,11 +21,9 @@ namespace CsvPnl
         public IEnumerable<StrategyPnl> InitStrategyList(List<string[]> data)
         {
             int counter = 0;
-            // gets strategies
-            // string[] columnHeaders = data.First().Split(",");
-            foreach (string column in data.First().Skip(1))
+            foreach (string[] row in data.Skip(1))
             {
-                StrategyPnl newStrat = new StrategyPnl(column);
+                StrategyPnl newStrat = new StrategyPnl(row[0]);
                 newStrat.Id = counter;
                 counter++;
                 yield return newStrat;
@@ -52,7 +50,7 @@ namespace CsvPnl
                 {
                     var strat = list[x - 1];
                     var convertedStrat = _service.StrategyPnlToEntity(strat);
-                    Capital newCap = (Capital) DataFactory.Create("capital", currentDate, decimal.Parse(row[x]), convertedStrat);
+                    Capital newCap = (Capital) DataFactory.Create(FactoryDataType.Capital, currentDate, decimal.Parse(row[x]), convertedStrat);
                     strat.Capitals.Add(newCap);
                 }
             }
@@ -78,27 +76,11 @@ namespace CsvPnl
                 {
                     var strat = list[x - 1];
                     var convertedStrat = _service.StrategyPnlToEntity(strat);
-                    Pnl newPnl = (Pnl) DataFactory.Create("pnl", currentDate, decimal.Parse(row[x]), convertedStrat);
+                    Pnl newPnl = (Pnl) DataFactory.Create(FactoryDataType.Pnl, currentDate, decimal.Parse(row[x]), convertedStrat);
                     strat.Pnls.Add(newPnl);
                 }
             }
             return list;
-        }
-        // dumb
-        public List<Pnl> ReadAllPnls()
-        {
-            // return data of csv
-            string[] csvRows = System.IO.File.ReadAllLines(PnlDataFile).ToArray();
-            var pnls = new List<Pnl>();
-            foreach (var row in csvRows.Skip(1))
-            {
-                var split = row.Split(",");
-                DateTime date = DateTime.ParseExact(split[0], "yyyy-MM-dd", null);
-                Decimal amount = Decimal.Parse(split[1]);
-                
-                //pnls.Add(newPnl);
-            }
-            return pnls;
         }
     }
 }

@@ -1,5 +1,8 @@
 ## CURRENT TASK TO DO
 Do cleanup
+
+Optional parameters in controllers (API route ? keyword)
+
 Do Fibonacci as a recursive function
 
 ## OLD
