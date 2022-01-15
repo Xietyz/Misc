@@ -77,7 +77,44 @@ namespace WebAPI.Controllers
             }
             return listToReturn;
         }
+        [HttpGet]
+        [Route("monthly-capital/{strategies}")]
+        public List<MonthlyReturn> GetMonthlyCapital(string strategies)
+        {
+            var monthlyReturnList = new List<MonthlyReturn>();
+            var capitals = _dbContext.Capitals;
+            string[] strats = strategies.Split(',');
 
+            //var capitals = _dbContext.Capitals
+            //    .Where(x => x.Strategy.StrategyName.Equals(strat))
+
+            foreach (var strat in strats)
+            {
+                foreach (var capital in capitals)
+                {
+                    string stratName = capital.Strategy.StrategyName;
+                    if (strat == stratName)
+                    {
+                        var toReturn = new MonthlyReturn(stratName, capital.CapitalDate, capital.Amount);
+                        monthlyReturnList.Add(toReturn);
+                    }
+                }
+            }
+            return monthlyReturnList.ToList();
+        }
+
+    }
+    public class MonthlyReturn
+    {
+        public MonthlyReturn(string strategy, DateTime date, decimal capital)
+        {
+            Strategy = strategy;
+            Date = date;
+            Capital = capital;
+        }
+        public string Strategy { get; set; }
+        public DateTime Date { get; set; }
+        public decimal Capital { get; set; }
     }
     public class PnlReturn
     {
