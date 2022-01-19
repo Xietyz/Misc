@@ -6,7 +6,9 @@ namespace Recursion
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            int steps = 10;
+            int result = new Fibonacci(steps).FibonacciRecursion(0, 1);
+            Console.WriteLine(result);
         }
     }
 }
