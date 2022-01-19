@@ -47,22 +47,6 @@ namespace Multithreading
                     }
                 }
                 matchedNameList.Add(newMatchedName);
-                //foreach (var name in nameList)
-                //{
-                //    var name2 = nameList[(int)i];
-                //    score = FuzzySharp.Levenshtein.GetRatio(newMatchedName.Name1, name2);
-                //    if (score > newMatchedName.Score)
-                //    {
-                //        newMatchedName.Score = score;
-                //        newMatchedName.Name2 = name2;
-                //    }
-                //}
-
-                //var name1 = nameList[(int)i];
-                //var name2 = nameList[(int)i + 1];
-                //var score = FuzzySharp.Levenshtein.GetRatio(name1, name2);
-                //var newMatchedName = new MatchedName(name1, name2);
-                //matchedNameList.Add(newMatchedName);
             });
             var matchedNameList2 = matchedNameList.OrderByDescending(x => x.Score).AsEnumerable();
             foreach(var scoring in matchedNameList2)
@@ -86,3 +70,19 @@ namespace Multithreading
         }
     }
 }
+//foreach (var name in nameList)
+//{
+//    var name2 = nameList[(int)i];
+//    score = FuzzySharp.Levenshtein.GetRatio(newMatchedName.Name1, name2);
+//    if (score > newMatchedName.Score)
+//    {
+//        newMatchedName.Score = score;
+//        newMatchedName.Name2 = name2;
+//    }
+//}
+
+//var name1 = nameList[(int)i];
+//var name2 = nameList[(int)i + 1];
+//var score = FuzzySharp.Levenshtein.GetRatio(name1, name2);
+//var newMatchedName = new MatchedName(name1, name2);
+//matchedNameList.Add(newMatchedName);

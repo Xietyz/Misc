@@ -1,13 +1,10 @@
 ## CURRENT TASK TO DO
-DB stuff for Jacob
-Do dependency injection tutorial.
-Scoped = alive for request.
-Singleton = hella alive.
-Add factory to existing project.
+Do cleanup
 
-https://docs.microsoft.com/en-us/dotnet/core/extensions/dependency-injection-usage
+Optional parameters in controllers (API route ? keyword)
 
-https://github.com/changetocoding/CSharpTraining/blob/main/LessonX-DependencyInjection.md
+Do Fibonacci as a recursive function
+
 ## OLD
 you are passed a list of IDs and an object containing a string 'event' (the state) and the corresponding ID.
 write tests to figure out which state the ID is on and/or which events is has passed.

@@ -14,7 +14,6 @@ namespace CsvPnl
             StrategyReader _reader = stratList._reader;
 
             stratList.InitialiseStrategyList();
-            //stratList.PopulateStrategyListCapital(stratList.CapitalDataFile);
             Console.WriteLine("COMMANDS: capital, cumulative-pnl, store");
             Console.WriteLine("ENTER COMMAND:");
             string[] commandArray = Console.ReadLine().Split(" ");

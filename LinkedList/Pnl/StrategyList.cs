@@ -13,7 +13,7 @@ namespace CsvPnl
 
         public void InitialiseStrategyList()
         {
-            _list = _reader.InitStrategyList(_reader.ReadCsv(_reader.CapitalDataFile)).ToList();
+            _list = _reader.InitStrategyList(_reader.ReadCsv(_reader.RegionDataFile)).ToList();
             _list = _reader.ReadRegions(_reader.ReadCsv(_reader.RegionDataFile), _list);
             _list = _reader.ReadCapital(_reader.ReadCsv(_reader.CapitalDataFile), _list);
             _list = _reader.ReadPnls(_reader.ReadCsv(_reader.PnlDataFile), _list);
