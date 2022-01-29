@@ -34,7 +34,7 @@ namespace Multithreading
                 double score;
                 for(int x = 0; x < breakIndex; x++)
                 {
-                    if (newMatchedName.Name1.Equals(nameList[x]))
+                    if (i == x)
                     {
                         continue;
                     }
