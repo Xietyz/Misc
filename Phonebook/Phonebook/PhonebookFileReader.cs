@@ -8,13 +8,17 @@ namespace Phonebook
     public class PhonebookFileReader
     {
         const string ContactFileDir = "/Contacts.txt";
+        private object _readerLock = new object();
         public void SaveContactsToFile(Dictionary<int, long> contactDict)
         {
-            foreach (var contact in contactDict)
+            lock (_readerLock)
             {
-                using (StreamWriter file = new StreamWriter(ContactFileDir))
+                foreach (var contact in contactDict)
                 {
-                    file.WriteLine(contact.Key + "," + contact.Value);
+                    using (StreamWriter file = new StreamWriter(ContactFileDir))
+                    {
+                        file.WriteLine(contact.Key + "," + contact.Value);
+                    }
                 }
             }
         }
@@ -23,11 +27,14 @@ namespace Phonebook
             string[] allData;
             if (System.IO.File.Exists(ContactFileDir))
             {
-                allData = System.IO.File.ReadAllLines(ContactFileDir);
-                foreach (var contact in allData)
+                lock (_readerLock)
                 {
-                    string[] line = contact.Split(",");
-                    contactDict.Add(int.Parse(line[0]), long.Parse(line[1]));
+                    allData = System.IO.File.ReadAllLines(ContactFileDir);
+                    foreach (var contact in allData)
+                    {
+                        string[] line = contact.Split(",");
+                        contactDict.Add(int.Parse(line[0]), long.Parse(line[1]));
+                    }
                 }
             }
         }

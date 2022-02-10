@@ -44,14 +44,6 @@ namespace PhonebookTests.PhonebookBasicTests
             Assert.AreEqual(dictionary.Execute("GET t1"), "1234");
         }
         [Test]
-        public void DoesNotAllowNamesOver4Characters()
-        {
-            FunctionDictionary dictionary = new FunctionDictionary(new PhonebookFileReader());
-
-            Assert.AreEqual(dictionary.Execute("STORE test1 123"), "Name too large");
-            Assert.AreEqual(dictionary.Execute("GET test1"), "Name too large");
-        }
-        [Test]
         public void DoesNotAllowNumbersOver11Digits()
         {
             FunctionDictionary dictionary = new FunctionDictionary(new PhonebookFileReader());

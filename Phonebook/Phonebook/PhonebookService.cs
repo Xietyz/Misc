@@ -14,13 +14,16 @@ namespace Phonebook
         }
         public string GetNumber(Dictionary<int, long> contactDict, string inputValue)
         {
-            try
+            lock (contactDict)
             {
-                return contactDict[GetStableHashCode(inputValue)].ToString();
-            }
-            catch
-            {
-                return null;
+                try
+                {
+                    return contactDict[GetStableHashCode(inputValue)].ToString();
+                }
+                catch
+                {
+                    return null;
+                }
             }
         }
         public string UpdateNumber(Dictionary<int, long> contactDict, string inputValue)
@@ -35,28 +38,35 @@ namespace Phonebook
             {
                 return "Number too large";
             };
-            if (!contactDict.ContainsKey(GetStableHashCode(whoseNumberToUpdate)))
+            lock (contactDict)
             {
-                return "Does not exist";
-            }
-            contactDict.TryGetValue(GetStableHashCode(whoseNumberToUpdate), out long oldNumber);
-            contactDict[GetStableHashCode(whoseNumberToUpdate)] = numberToUpdate;
+                if (!contactDict.ContainsKey(GetStableHashCode(whoseNumberToUpdate)))
+                {
+                    return "Does not exist";
+                }
+                contactDict.TryGetValue(GetStableHashCode(whoseNumberToUpdate), out long oldNumber);
+                contactDict[GetStableHashCode(whoseNumberToUpdate)] = numberToUpdate;
 
-            FileReader.SaveContactsToFile(contactDict);
-            return "UPDATED FROM " + oldNumber;
+                FileReader.SaveContactsToFile(contactDict);
+                return "UPDATED FROM " + oldNumber;
+            }
         }
         public string DeleteContact(Dictionary<int, long> contactDict, string inputValue)
         {
             string nameToDelete = inputValue;
-            contactDict.TryGetValue(GetStableHashCode(nameToDelete), out long numberToDelete);
-            if (!contactDict.ContainsKey(GetStableHashCode(nameToDelete)))
+            lock (contactDict)
             {
-                return "Does not exist";
-            }
-            contactDict.Remove(GetStableHashCode(nameToDelete));
+                contactDict.TryGetValue(GetStableHashCode(nameToDelete), out long numberToDelete);
+                if (!contactDict.ContainsKey(GetStableHashCode(nameToDelete)))
+                {
+                    return "Does not exist";
+                }
+                contactDict.Remove(GetStableHashCode(nameToDelete));
 
-            FileReader.SaveContactsToFile(contactDict);
-            return "Deleted " + numberToDelete.ToString();
+                FileReader.SaveContactsToFile(contactDict);
+                return "Deleted " + numberToDelete.ToString();
+            }
+
         }
         public string StoreContact(Dictionary<int, long> contactDict, string inputValue)
         {
@@ -70,10 +80,14 @@ namespace Phonebook
             {
                 return "Number too large";
             };
-            contactDict.Add(GetStableHashCode(newName), newNumber);
+            lock (contactDict)
+            {
+                contactDict.Add(GetStableHashCode(newName), newNumber);
 
-            FileReader.SaveContactsToFile(contactDict);
-            return "Stored " + newName + " - " + newNumber;
+                FileReader.SaveContactsToFile(contactDict);
+                return "Stored " + newName + " - " + newNumber;
+            }
+
         }
         public bool NumberSizeCheck(long numberToCheck)
         {

@@ -14,6 +14,7 @@ namespace Phonebook
         string InputValue;
         PhonebookService Service;
         PhonebookFileReader FileService;
+        private object _dictionaryLock = new object();
 
         public FunctionDictionary(PhonebookFileReader reader)
         {
