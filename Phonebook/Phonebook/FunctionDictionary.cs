@@ -14,7 +14,6 @@ namespace Phonebook
         string InputValue;
         PhonebookService Service;
         PhonebookFileReader FileService;
-        private object _dictionaryLock = new object();
 
         public FunctionDictionary(PhonebookFileReader reader)
         {
@@ -40,22 +39,52 @@ namespace Phonebook
 
         private string DeleteContact()
         {
-            return Service.DeleteContact(ContactDict, InputValue);
+            try
+            {
+                return Service.DeleteContact(ContactDict, InputValue);
+            }
+            catch (Exception ex)
+            {
+                return "Failed to delete contact " + InputValue + ", ERROR: \n" + ex;
+            }
         }
 
         private string StoreContact()
         {
-            return Service.StoreContact(ContactDict, InputValue);
+            try
+            {
+                return Service.StoreContact(ContactDict, InputValue);
+            }
+            catch (Exception ex)
+            {
+                return "Failed to create contact " + InputValue + ", ERROR: \n" + ex;
+            }
         }
 
         public string GetNumber()
         {
-            return Service.GetNumber(ContactDict, InputValue);
+            try
+            {
+                return Service.GetNumber(ContactDict, InputValue);
+            }
+            catch (Exception ex)
+            {
+                return "Failed to get contact " + InputValue + ", ERROR: \n" + ex;
+            }
         }
         public string Execute(string input)
         {
-            string[] inputArray = input.Split(" ");
-            InputCommand = inputArray[0].ToUpper();
+            string[] inputArray = new string[] { };
+            try
+            {
+                inputArray = input.Split(" ");
+                InputCommand = inputArray[0].ToUpper();
+            }
+            catch (Exception ex)
+            {
+                return "Bad command \n " + ex;
+            } 
+            
             if (input.Split(" ").Count() > 2)
             {
                 InputValue = inputArray[1] + " " + inputArray[2];
