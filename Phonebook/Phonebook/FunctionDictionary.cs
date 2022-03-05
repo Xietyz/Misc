@@ -45,7 +45,7 @@ namespace Phonebook
             }
             catch (Exception ex)
             {
-                return "Failed to delete contact " + InputValue + ", ERROR: \n" + ex;
+                throw new Exception("Failed to delete contact " + InputValue + ", ERROR:", ex);
             }
         }
 
@@ -57,7 +57,7 @@ namespace Phonebook
             }
             catch (Exception ex)
             {
-                return "Failed to create contact " + InputValue + ", ERROR: \n" + ex;
+                throw new Exception("Failed to create contact " + InputValue + ", ERROR:", ex);
             }
         }
 
@@ -69,7 +69,7 @@ namespace Phonebook
             }
             catch (Exception ex)
             {
-                return "Failed to get contact " + InputValue + ", ERROR: \n" + ex;
+                throw new Exception("Failed to get contact " + InputValue + ", ERROR:", ex);
             }
         }
         public string Execute(string input)
@@ -82,7 +82,7 @@ namespace Phonebook
             }
             catch (Exception ex)
             {
-                return "Bad command \n " + ex;
+                throw new Exception("Bad command", ex);
             } 
             
             if (input.Split(" ").Count() > 2)
